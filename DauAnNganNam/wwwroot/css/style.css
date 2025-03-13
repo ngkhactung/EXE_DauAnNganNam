@@ -43,7 +43,7 @@ font-family: 'Playfair Display', serif;
 font-family: 'Work Sans', sans-serif; */
 
 :root {
-	--thm-font: "Karla", sans-serif;
+	--thm-font: "Segoe UI", sans-serif;
 	--heading-font: "Playfair Display", serif;
 	--special-font: "Work Sans", sans-serif;
 	--thm-base: #aaa081;
