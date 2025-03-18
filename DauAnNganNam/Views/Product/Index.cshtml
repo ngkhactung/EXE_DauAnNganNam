@@ -1,0 +1,46 @@
+﻿@{
+
+}
+@using DauAnNganNam.Models
+
+<section class="page-header" style="background-image: url(assets/images/backgrounds/page-header-bg-1-1.jpg);">
+    <div class="container">
+        <h2>Bộ sưu tập</h2>
+    </div><!-- /.container -->
+</section><!-- /.page-header -->
+
+<section class="collection-grid">
+    <div class="container">
+        <div class="collection-grid__top">
+            <div class="block-title-two text-center">
+                <h3>Khám phá <br> bộ sưu tập</h3>
+            </div><!-- /.block-title-two -->
+
+            <ul class="collection-filter post-filter list-unstyled">
+                <li data-filter=".filter-item" class="active"><span>Tất cả</span></li>
+                @foreach (var i in ViewBag.Categories)
+                {
+                    <li data-filter=.@i.Name><span>@i.Name</span></li>
+                }
+               
+            </ul><!-- /.collection-filter list-unstyled -->
+        </div><!-- /.collection-grid__top -->
+        <div class="row high-gutter filter-layout">
+            @foreach(var i in ViewBag.Products)
+            {
+                <div class="col-lg-4 col-md-6 filter-item @i.ProductCategory.Name">
+                    <div class="collection-grid__single">
+                        <div class="collection-grid__image">
+                            <img src="@i.Images[@i.Images.Count - 1].ImageUrl" alt="">
+                            <a href="/Product/@i.ProductId" class="collection-grid__link">+</a><!-- /.collection-grid__link -->
+                        </div><!-- /.collection-grid__image -->
+                        <div class="collection-grid__content">
+                            <h3><a href="/Product/Detail/@i.ProductId">@i.ProductName</a></h3>
+                            <p>@i.SubDescription</p>
+                        </div><!-- /.collection-grid__content -->
+                    </div><!-- /.collection-grid__single -->
+                </div> <!-- /.col-lg-4 -->
+            }
+        </div><!-- /.row -->
+    </div><!-- /.container -->
+</section><!-- /.collection-grid -->

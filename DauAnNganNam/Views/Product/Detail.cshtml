@@ -1,0 +1,25 @@
+﻿@using DauAnNganNam.Models
+@{
+}
+<section class="page-header" style="background-image: url(assets/images/backgrounds/page-header-bg-1-1.jpg);">
+    <div class="container">
+        <h2>Sản phẩm</h2>
+    </div><!-- /.container -->
+</section><!-- /.page-header -->
+
+<section class="event-details">
+    <div class="container">
+        <div class="event-details__top">
+            <h3>@ViewBag.Product.ProductName</h3>
+        </div><!-- /.event-details__top -->
+        <div class="row high-gutter">
+            <div class="col-lg-8">
+                <div class="event-details__main">
+                    <div class="event-details__image">
+						<img src="/@ViewBag.Product.Images[@ViewBag.Product.Images.Count - 1].ImageUrl" alt="">
+                    </div><!-- /.event-details__image -->
+                    <div class="event-details__content">
+                        <p>@ViewBag.Product.Description</p>
+        </div><!-- /.row -->
+    </div><!-- /.container -->
+</section><!-- /.event-details -->
