@@ -2,8 +2,21 @@
 
 }
 @using DauAnNganNam.Models
+<style>
+    .collection-grid__image {
+        position: relative;
+        width: 100%; /* Đảm bảo ảnh chiếm toàn bộ chiều ngang của container */
+        height: 300px; /* Chiều cao cố định, bạn có thể điều chỉnh */
+        overflow: hidden; /* Ẩn phần thừa của ảnh nếu vượt kích thước */
+    }
 
-<section class="page-header" style="background-image: url(assets/images/backgrounds/page-header-bg-1-1.jpg);">
+        .collection-grid__image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ảnh sẽ được cắt để vừa khung mà không bị méo */
+        }
+</style>
+<section class="page-header" style="background-image: url(/images/backgrounds/page-header-bg-1-1.jpg);">
     <div class="container">
         <h2>Bộ sưu tập</h2>
     </div><!-- /.container -->
