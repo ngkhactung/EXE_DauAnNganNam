@@ -1,4 +1,4 @@
-﻿
+﻿﻿
 @{
     ViewData["Title"] = "Trang chủ";
 }
@@ -33,7 +33,7 @@
             </div>
         </div>
         <!-- Slide Item -->
-		<div class="slide-item">
+        <div class="slide-item">
             <div class="image-layer lazy-image" style="background-image: url('/images/brand/congthanh.jpg');"></div>
             <div class="container">
                 <div class="content-box text-left">
@@ -196,12 +196,12 @@
     </div><!-- /.container -->
 </section><!-- /.cta-three -->
 <section class="collection-two">
-            <div class="container-fluid">
-                <div class="block-title-two text-center">
-                    <p>Gallery</p>
+    <div class="container-fluid">
+        <div class="block-title-two text-center">
+            <p>Gallery</p>
             <h3>Khám phá Bộ sưu tập</h3>
-                </div><!-- /.block-title-two -->
-                <div class="collection-two__carousel shadowed__carousel thm__owl-carousel owl-carousel owl-theme" data-options='{
+        </div><!-- /.block-title-two -->
+        <div class="collection-two__carousel shadowed__carousel thm__owl-carousel owl-carousel owl-theme" data-options='{
             "loop": true, "margin": 0, "autoplay": true, "autoplayTimeout": 5000, "autoplayHoverPause": true, "items": 5, "smartSpeed": 700, "dots": false, "nav": true, "responsive": {
                 "1920": { "items": 5},
                 "1440": { "items": 4},
@@ -215,28 +215,28 @@
         }'>
             @foreach (var i in ViewBag.Products)
             {
-        <div class="item">
-            <div class="collection-two__single">
-                <div class="collection-two__image">
+                <div class="item">
+                    <div class="collection-two__single">
+                        <div class="collection-two__image">
                             <img src="@(i.Images.Count >= 1 ?i.Images[(i.Images.Count -1)].ImageUrl : "")"
-                                 alt="@i.ProductName" 
-                         style="width: 100%; height: 200px; object-fit: cover;">
-                </div><!-- /.collection-two__image -->
-                <div class="collection-two__content">
-                    <h3><a href="#">@i.ProductName</a></h3>
-                    <p>@i.SubDescription</p>
-                </div><!-- /.collection-two__content -->
-            </div><!-- /.collection-two__single -->
-        </div>
+                                 alt="@i.ProductName"
+                                 style="width: 100%; height: 200px; object-fit: cover;">
+                        </div><!-- /.collection-two__image -->
+                        <div class="collection-two__content">
+                            <h3><a href="#">@i.ProductName</a></h3>
+                            <p>@i.SubDescription</p>
+                        </div><!-- /.collection-two__content -->
+                    </div><!-- /.collection-two__single -->
+                </div>
 
                 <!-- /.item -->
             }
-            
 
 
-                </div><!-- /.collection-two__carousel shadowed__carousel thm__owl-carousel owl-carousel owl-theme -->
-            </div><!-- /.container-fluid -->
-        </section><!-- /.collection-two -->
+
+        </div><!-- /.collection-two__carousel shadowed__carousel thm__owl-carousel owl-carousel owl-theme -->
+    </div><!-- /.container-fluid -->
+</section><!-- /.collection-two -->
 <section class="event-two">
     <img src="~/images/shapes/event-sculpture-2-1.png" class="event-two__sculpture" alt="">
     <div class="container">
@@ -596,4 +596,4 @@
         <!-- /.brand-one__carousel thm__owl-carousel owl-carousel owl-theme -->
     </div>
     <!-- /.container -->
- </section> <!-- /.brand-one -->
+</section> <!-- /.brand-one -->
