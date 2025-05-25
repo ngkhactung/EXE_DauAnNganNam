@@ -82,7 +82,6 @@ namespace DauAnNganNam.Controllers
             try
             {
                 var openAiKey = "";
-                
                 var httpClient = new HttpClient();
                 httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {openAiKey}");
 
