@@ -81,7 +81,8 @@ namespace DauAnNganNam.Controllers
         {
             try
             {
-                var openAiKey = "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";
+                var openAiKey = "";
+                //var openAiKey = "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";
                 var httpClient = new HttpClient();
                 httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {openAiKey}");
 
