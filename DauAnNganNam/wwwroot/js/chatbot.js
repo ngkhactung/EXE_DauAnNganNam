@@ -56,27 +56,4 @@ async function askGeminiFromChat(question) {
         console.error('Error:', error);
         appendMessage("bot", '❌ Đã có lỗi xảy ra khi kết nối tới server.');
     }
-
-    async function playAnswerAudio(answerText) {
-
-        try {
-            const response = await fetch('/Ais/TextToSpeech', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
-                },
-                body: JSON.stringify({ text: answerText })
-            });
-
-            if (!response.ok) throw new Error('Không thể phát âm thanh.');
-
-            const audioBlob = await response.blob();
-            const audioUrl = URL.createObjectURL(audioBlob);
-            const audio = new Audio(audioUrl);
-            audio.play();
-        } catch (error) {
-            //alert("Đã xảy ra lỗi khi phát âm thanh.");
-        }
-    }
 }

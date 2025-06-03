@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DauAnNganNam.ViewModel;
+using Microsoft.AspNetCore.Mvc;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
@@ -20,12 +21,16 @@ namespace DauAnNganNam.Controllers
         {
             return View();
         }
+
+        public IActionResult Chatbot()
+        {
+            return View();
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AskGemini([FromBody] QuestionModel model)
+        public async Task<IActionResult> AskGemini([FromBody] QuestionVM model)
         {
-            model = LimitAnswer(model);
-            
             if (string.IsNullOrWhiteSpace(model.Question))
             {
                 return BadRequest(new { error = "Câu hỏi không được để trống." });
@@ -33,8 +38,10 @@ namespace DauAnNganNam.Controllers
 
             try
             {
-                var modelName = "gemini-2.5-flash-preview-05-20";
-                var endpoint = $"https://generativelanguage.googleapis.com/v1beta/models/{modelName}:generateContent?key={_apiKey}";
+                model = LimitAnswer(model);
+
+                var geminiModel = "gemini-2.5-flash-preview-05-20";
+                var endpoint = $"https://generativelanguage.googleapis.com/v1beta/models/{geminiModel}:generateContent?key={_apiKey}";
 
                 var requestBody = new
                 {
@@ -61,9 +68,9 @@ namespace DauAnNganNam.Controllers
 
                 var responseBody = await response.Content.ReadAsStringAsync();
                 var jsonDoc = JsonDocument.Parse(responseBody);
-                string answer = jsonDoc.RootElement.GetProperty("candidates")[0]
+                string? answer = jsonDoc.RootElement.GetProperty("candidates")[0]
                     .GetProperty("content").GetProperty("parts")[0].GetProperty("text").GetString();
-                answer = answer.Replace("*", "");
+                answer = answer?.Replace("*", "");
                 return Json(new { answer = answer ?? "Không nhận được phản hồi hợp lệ từ Gemini." });
             }
             catch (Exception ex)
@@ -71,43 +78,8 @@ namespace DauAnNganNam.Controllers
                 return StatusCode(500, new { error = $"Lỗi: {ex.Message}" });
             }
         }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> TextToSpeech([FromBody] TextRequest model)
-        {
-            try
-            {
-                var openAiKey = "";
-                var httpClient = new HttpClient();
-                httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {openAiKey}");
 
-                var requestBody = new
-                {
-                    model = "tts-1", // hoặc "gpt-4o" nếu dùng bản mới
-                    voice = "nova", // coral, nova, alloy, shimmer, echo, fable
-                    input = model.Text
-                };
-
-                var requestContent = new StringContent(JsonSerializer.Serialize(requestBody), Encoding.UTF8, "application/json");
-
-                var response = await httpClient.PostAsync("https://api.openai.com/v1/audio/speech", requestContent);
-
-                if (!response.IsSuccessStatusCode)
-                {
-                    var error = await response.Content.ReadAsStringAsync();
-                    return StatusCode((int)response.StatusCode, new { error });
-                }
-
-                var audioBytes = await response.Content.ReadAsByteArrayAsync();
-                return File(audioBytes, "audio/wav");
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { error = ex.Message });
-            }
-        }
-
-        private QuestionModel LimitAnswer(QuestionModel model)
+        private QuestionVM LimitAnswer(QuestionVM model)
         {
             model.Question = model.Question + "\n Hãy trả lời câu hỏi bằng tiếng Việt, trả lời câu hỏi một cách ngắn gọn, đầy đủ.";
             model.Question = model.Question + "\n Nếu câu hỏi yêu cầu giới thiệu về bản thân thì hãy trả lời như sau:"
@@ -115,15 +87,5 @@ namespace DauAnNganNam.Controllers
 
             return model;
         }
-    }
-
-    public class TextRequest
-    {
-        public string Text { get; set; }
-    }
-
-    public class QuestionModel
-    {
-        public string Question { get; set; }
     }
 }
