@@ -8,13 +8,10 @@ namespace DauAnNganNam
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
             // Add services to the container.
             ConfigureServices(builder.Services, builder.Configuration);
-            // Add services to the container.
-            builder.Services.AddControllersWithViews();
 
-            // Register IHttpClientFactory
-            builder.Services.AddHttpClient();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -46,6 +43,9 @@ namespace DauAnNganNam
             );
 
             service.AddControllersWithViews();
+
+            // Register IHttpClientFactory
+            service.AddHttpClient();
         }
     }
 }

@@ -20,10 +20,6 @@ namespace DauAnNganNam.Controllers
         {
             return View();
         }
-        public IActionResult test()
-        {
-            return View();
-        }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AskGemini([FromBody] QuestionModel model)
@@ -120,6 +116,7 @@ namespace DauAnNganNam.Controllers
             return model;
         }
     }
+
     public class TextRequest
     {
         public string Text { get; set; }

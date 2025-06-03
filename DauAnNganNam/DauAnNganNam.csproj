@@ -20,9 +20,4 @@
     <PackageReference Include="Microsoft.Extensions.AI" Version="9.5.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\css\" />
-    <Folder Include="wwwroot\js\" />
-  </ItemGroup>
-
 </Project>
