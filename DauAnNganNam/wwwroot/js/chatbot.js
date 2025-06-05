@@ -50,7 +50,6 @@ async function askGeminiFromChat(question) {
 
         const data = await response.json();
         appendMessage("bot", data.answer);
-        playAnswerAudio(data.answer);
 
     } catch (error) {
         console.error('Error:', error);

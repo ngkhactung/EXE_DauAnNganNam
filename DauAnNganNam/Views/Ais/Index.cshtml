@@ -1,1 +1,270 @@
-﻿
+﻿@{
+    ViewData["Title"] = "Voice Chat with AI";
+    Layout = null;
+}
+
+<link rel="stylesheet" href="~/css/voicechat.css" />
+
+@Html.AntiForgeryToken()
+
+<div class="voice-chat-container">
+    <div class="ai-avatar-section">
+        <div class="avatar-container">
+            <img id="aiAvatar" src="~/images/voice-chat/ai-avatar.png" alt="AI Avatar" class="ai-avatar" />
+            <div class="avatar-glow"></div>
+        </div>
+
+        <div class="chat-info">
+            <h1 class="ai-name">Tôi là <span class="highlight-pink">Shifra</span>, trợ lý <span class="highlight-cyan">ảo</span> của bạn</h1>
+        </div>
+
+        <div class="voice-controls">
+            <button id="voiceButton" class="voice-btn">
+                <i class="mic-icon">🎤</i>
+                <span class="btn-text">Nhấn để nói chuyện với tôi</span>
+            </button>
+
+            <div id="listeningIndicator" class="listening-indicator" style="display: none;">
+                <img src="~/images/voice-chat/user-voice.gif" alt="Listening" class="listening-gif" />
+                <p>Đang lắng nghe...</p>
+            </div>
+        </div>
+
+        <div id="conversationArea" class="conversation-area">
+            <div id="userText" class="user-message"></div>
+            <div id="aiResponse" class="ai-message"></div>
+        </div>
+
+        <div id="statusMessage" class="status-message"></div>
+    </div>
+</div>
+
+<script>
+    class VoiceChat {
+        constructor() {
+            // Khởi tạo các API trình duyệt
+            this.recognition = null;                    // API nhận diện giọng nói
+            this.synthesis = window.speechSynthesis;    // API text-to-speech
+
+            // Trạng thái hoạt động
+            this.isListening = false;                   // Có đang nghe không
+            this.isSpeaking = false;                    // Có đang nói không
+
+            // Lấy reference các element DOM
+            this.voiceButton = document.getElementById('voiceButton');
+            this.listeningIndicator = document.getElementById('listeningIndicator');
+            this.aiAvatar = document.getElementById('aiAvatar');
+            this.userText = document.getElementById('userText');
+            this.aiResponse = document.getElementById('aiResponse');
+            this.statusMessage = document.getElementById('statusMessage');
+
+            // Khởi tạo các chức năng
+            this.initSpeechRecognition();
+            this.bindEvents();
+        }
+
+        // Khởi tạo Speech Recognition API
+        initSpeechRecognition() {
+            if ('webkitSpeechRecognition' in window) {
+                this.recognition = new webkitSpeechRecognition();
+            } else if ('SpeechRecognition' in window) {
+                this.recognition = new SpeechRecognition();
+            } else {
+                this.showStatus('Trình duyệt không hỗ trợ nhận diện giọng nói', 'error');
+                return;
+            }
+
+            this.recognition.continuous = true;         // Có nghe liên tục hay không
+            this.recognition.interimResults = false;    // Có trả về kết quả tạm thời hay không
+            this.recognition.lang = 'vi-VN';            // Ngôn ngữ nhận diện
+
+            // Event: Khi bắt đầu nghe
+            this.recognition.onstart = () => {
+                this.isListening = true;
+                this.showListening();
+            };
+
+            // Event: Khi có kết quả nhận diện được
+            this.recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript;
+                this.handleUserSpeech(transcript);
+            };
+
+            // Event: Khi có lỗi xảy ra
+            this.recognition.onerror = (event) => {
+                this.hideListening();
+                this.showStatus(`Lỗi nhận diện: ${event.error}`, 'error');
+            };
+
+            // Event: Khi kết thúc nghe
+            this.recognition.onend = () => {
+                this.isListening = false;
+                this.hideListening();
+            };
+        }
+
+        // Tạo SpeechSynthesisUtterance object để text-to-speech
+        createUtterance(text) {
+            const utterance = new SpeechSynthesisUtterance(text);
+
+            utterance.lang = 'vi-VN';      // Ngôn ngữ
+            utterance.rate = 1;          // Tốc độ đọc (0.1 - 10)
+            utterance.pitch = 1.0;         // Cao độ giọng (0 - 2)
+            utterance.volume = 1.0;        // Âm lượng (0 - 1)
+
+            // Tìm giọng tiếng Việt trong danh sách voices có sẵn
+            const vietnameseVoice = this.synthesis.getVoices().find(voice =>
+                voice.lang.includes('vi') || voice.lang.includes('VN')
+            );
+
+            if (vietnameseVoice) {
+                utterance.voice = vietnameseVoice;
+            }
+
+            // Event: Khi bắt đầu đọc
+            utterance.onstart = () => {
+                this.isSpeaking = true;
+                this.updateVoiceButton();
+            };
+
+            // Event: Khi kết thúc đọc
+            utterance.onend = () => {
+                this.isSpeaking = false;
+                this.updateVoiceButton();
+            };
+
+            // Event: Khi có lỗi đọc
+            utterance.onerror = (event) => {
+                this.isSpeaking = false;
+                this.updateVoiceButton();
+                this.showStatus(`Lỗi phát âm: ${event.error}`, 'error');
+            };
+
+            return utterance;
+        }
+
+        // Gắn event listeners cho các elements
+        bindEvents() {
+            this.voiceButton.addEventListener('click', () => {
+                if (this.isListening) {
+                    this.stopListening();
+                } else if (this.isSpeaking) {
+                    this.stopSpeaking();
+                } else {
+                    this.startListening();
+                }
+            });
+        }
+
+        // Bắt đầu nghe giọng nói từ user
+        startListening() {
+            if (!this.recognition) {
+                this.showStatus('Nhận diện giọng nói không khả dụng', 'error');
+                return;
+            }
+
+            this.recognition.start();
+        }
+
+        // Bắt đầu đọc text bằng giọng nói
+        startSpeaking(text) {
+            if(!this.synthesis) {
+                this.showStatus('Trình duyệt không hỗ trợ text-to-speech', 'error');
+                return;
+            }
+
+            // Hủy các utterance đang chạy (nếu có)
+            this.synthesis.cancel();
+            const utterance = this.createUtterance(text);
+            this.synthesis.speak(utterance);
+        }
+
+        stopListening() {
+            if (this.recognition && this.isListening) {
+                this.recognition.stop();
+            }
+        }
+
+        stopSpeaking() {
+            this.synthesis.cancel();
+            this.isSpeaking = false;
+            this.updateVoiceButton();
+        }
+
+        showListening() {
+            this.listeningIndicator.style.display = 'block';
+            this.updateVoiceButton();
+        }
+
+        hideListening() {
+            this.listeningIndicator.style.display = 'none';
+            this.updateVoiceButton();
+        }
+
+        updateVoiceButton() {
+            if (this.isListening){
+                this.voiceButton.querySelector('.btn-text').textContent = 'Nhấn để dừng';
+                this.voiceButton.classList.add('listening');
+            } else if (this.isSpeaking) {
+                this.voiceButton.querySelector('.btn-text').textContent = 'Nhấn để dừng phát';
+                this.voiceButton.classList.add('speaking');
+            } else {
+                this.voiceButton.querySelector('.btn-text').textContent = 'Nhấn để nói chuyện với tôi';
+                this.voiceButton.classList.remove('listening', 'speaking');
+            }
+        }
+
+        // Xử lý text được nhận diện từ giọng nói của user
+        async handleUserSpeech(transcript) {
+            this.userText.textContent = `Bạn: ${transcript}`;
+            this.showStatus('Đang xử lý câu hỏi...', 'processing');
+
+            try {
+                const response = await fetch('@Url.Action("AskGemini", "Ais")', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                    },
+                    body: JSON.stringify({ question: transcript })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Lỗi từ server');
+                }
+
+                const data = await response.json();
+                this.aiResponse.textContent = `AI: ${data.answer}`;
+                this.startSpeaking(data.answer);
+                this.showStatus('', '');
+
+            } catch (error) {
+                const errorMsg = 'Xin lỗi, tôi không thể xử lý câu hỏi của bạn lúc này.';
+                this.aiResponse.textContent = `AI: ${errorMsg}`;
+                this.startSpeaking(errorMsg);
+                this.showStatus(`Lỗi: ${error.message}`, 'error');
+            }
+        }
+
+        // Hiển thị thông báo trạng thái
+        showStatus(message, type) {
+            this.statusMessage.textContent = message;
+            this.statusMessage.className = `status-message ${type}`;
+
+            if (message && type !== 'processing') {
+                setTimeout(() => {
+                    this.statusMessage.textContent = '';
+                    this.statusMessage.className = 'status-message';
+                }, 10000);
+            }
+        }
+    }
+
+    // Khởi tạo ứng dụng VoiceChat khi DOM đã load xong
+    document.addEventListener('DOMContentLoaded', () => {
+        new VoiceChat();
+    });
+
+</script>
+

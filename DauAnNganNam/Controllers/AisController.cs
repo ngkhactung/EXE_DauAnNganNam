@@ -31,7 +31,8 @@ namespace DauAnNganNam.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AskGemini([FromBody] QuestionVM model)
         {
-            if (string.IsNullOrWhiteSpace(model.Question))
+            Console.WriteLine($"Received question: {model?.Question}");
+            if (model == null || string.IsNullOrWhiteSpace(model.Question))
             {
                 return BadRequest(new { error = "Câu hỏi không được để trống." });
             }
@@ -70,7 +71,12 @@ namespace DauAnNganNam.Controllers
                 var jsonDoc = JsonDocument.Parse(responseBody);
                 string? answer = jsonDoc.RootElement.GetProperty("candidates")[0]
                     .GetProperty("content").GetProperty("parts")[0].GetProperty("text").GetString();
-                answer = answer?.Replace("*", "");
+
+                answer = answer?.Replace("*", "")
+                              ?.Replace("#", "")
+                              ?.Replace("**", "")
+                              ?.Trim();
+
                 return Json(new { answer = answer ?? "Không nhận được phản hồi hợp lệ từ Gemini." });
             }
             catch (Exception ex)
@@ -87,5 +93,6 @@ namespace DauAnNganNam.Controllers
 
             return model;
         }
+
     }
 }
