@@ -19,7 +19,7 @@
         </div>
 
         <div class="chat-info">
-            <h1 class="ai-name">Tôi là <span class="highlight-pink">Shifra</span>, trợ lý <span class="highlight-cyan">ảo</span> của bạn</h1>
+            <h1 class="ai-name">Tôi là <span class="highlight-pink">Kim Ấn</span>, trợ lý <span class="highlight-cyan">ảo</span> của bạn</h1>
         </div>
 
         <div class="voice-controls">
@@ -43,216 +43,271 @@
 <script>
     class VoiceChat {
         constructor() {
-            // Khởi tạo các API trình duyệt
-            this.recognition = null;
-            this.synthesis = window.speechSynthesis;
+            this.mediaRecorder = null;
+            this.audioContext = null;
+            this.stream = null;
+            this.audioChunks = [];
+            this.isRecording = false;
+            this.isPlaying = false;
 
-            // Trạng thái hoạt động
-            this.isListening = false;
-            this.isSpeaking = false;
-            this.isProcessing = false;
-
-            // Lấy reference các element DOM
             this.voiceButton = document.getElementById('voiceButton');
             this.listeningIndicator = document.getElementById('listeningIndicator');
             this.processingIndicator = document.getElementById('processingIndicator');
             this.aiAvatar = document.getElementById('aiAvatar');
 
-            // Khởi tạo các chức năng
-            this.initSpeechRecognition();
             this.bindEvents();
-        }
-
-        initSpeechRecognition() {
-            if ('webkitSpeechRecognition' in window) {
-                this.recognition = new webkitSpeechRecognition();
-            } else if ('SpeechRecognition' in window) {
-                this.recognition = new SpeechRecognition();
-            } else {
-                alert('Trình duyệt không hỗ trợ nhận diện giọng nói');
-                return;
-            }
-
-            this.recognition.continuous = true;
-            this.recognition.interimResults = false;
-            this.recognition.lang = 'vi-VN';
-
-            this.recognition.onstart = () => {
-                this.isListening = true;
-                this.showListening();
-            };
-
-            this.recognition.onresult = (event) => {
-                const transcript = event.results[0][0].transcript;
-                this.handleUserSpeech(transcript);
-            };
-
-            this.recognition.onerror = (event) => {
-                this.hideAllIndicators();
-                this.updateVoiceButton();
-                console.error(`Lỗi nhận diện: ${event.error}`);
-            };
-
-            this.recognition.onend = () => {
-                this.isListening = false;
-                if (!this.isProcessing) {
-                    this.hideAllIndicators();
-                    this.updateVoiceButton();
-                }
-            };
-        }
-
-        createUtterance(text) {
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = 'vi-VN';
-            utterance.rate = 0.85;
-            utterance.pitch = 0.6;
-            utterance.volume = 0.9
-
-            const vietnameseVoice = this.synthesis.getVoices().find(voice =>
-                (voice.lang.includes('vi') || voice.lang.includes('VN')) &&
-                (voice.name.toLowerCase().includes('male'))
-            );
-
-            if (vietnameseVoice) {
-                utterance.voice = vietnameseVoice;
-            }
-
-            utterance.onstart = () => {
-                this.isSpeaking = true;
-                this.aiAvatar.classList.add('speaking');
-                this.updateVoiceButton();
-            };
-
-            utterance.onend = () => {
-                this.isSpeaking = false;
-                this.aiAvatar.classList.remove('speaking');
-                this.updateVoiceButton();
-            };
-
-            utterance.onerror = (event) => {
-                this.isSpeaking = false;
-                this.updateVoiceButton();
-                console.error(`Lỗi phát âm: ${event.error}`);
-            };
-
-            return utterance;
         }
 
         bindEvents() {
             this.voiceButton.addEventListener('click', () => {
-                if (this.isListening) {
-                    this.stopListening();
-                } else if (this.isSpeaking) {
-                    this.stopSpeaking();
+                if (this.isRecording) {
+                    this.stopRecording();
+                } else if (this.isPlaying) {
+                    this.stopPlaying();
                 } else {
-                    this.startListening();
+                    this.startRecording();
                 }
             });
         }
 
-        startListening() {
-            if (!this.recognition) {
-                alert('Nhận diện giọng nói không khả dụng');
-                return;
+        async startRecording() {
+            try {
+                this.stream = await navigator.mediaDevices.getUserMedia({
+                    audio: {
+                        sampleRate: 16000,
+                        channelCount: 1,
+                        echoCancellation: true,
+                        noiseSuppression: true
+                    }
+                });
+
+                // Tạo AudioContext để xử lý audio
+                this.audioContext = new (window.AudioContext || window.webkitAudioContext)({
+                    sampleRate: 16000
+                });
+
+                const source = this.audioContext.createMediaStreamSource(this.stream);
+                const processor = this.audioContext.createScriptProcessor(4096, 1, 1);
+
+                this.audioChunks = [];
+
+                processor.onaudioprocess = (e) => {
+                    const inputData = e.inputBuffer.getChannelData(0);
+                    const int16Data = new Int16Array(inputData.length);
+                    for (let i = 0; i < inputData.length; i++) {
+                        int16Data[i] = Math.max(-32768, Math.min(32767, inputData[i] * 32768));
+                    }
+                    this.audioChunks.push(int16Data);
+                };
+
+                source.connect(processor);
+                processor.connect(this.audioContext.destination);
+
+                this.isRecording = true;
+                this.showListening();
+
+            } catch (error) {
+                console.error('Microphone access error:', error);
+                alert('Không thể truy cập microphone');
             }
-            this.recognition.start();
+        }
+
+        stopRecording() {
+            if (!this.isRecording) return;
+
+            this.isRecording = false;
+
+            if (this.audioContext) {
+                this.audioContext.close();
+            }
+
+            if (this.stream) {
+                this.stream.getTracks().forEach(track => track.stop());
+            }
+
+            this.hideListening();
+            this.showProcessing();
+            this.processAudio();
+        }
+
+        async processAudio() {
+            try {
+                if (this.audioChunks.length === 0) {
+                    throw new Error('Không có dữ liệu audio');
+                }
+
+                if (this.isSilent(this.audioChunks)) {
+                    throw new Error('Phát hiện im lặng, không gửi yêu cầu.');
+                }
+
+                // Tạo WAV file từ audio chunks
+                const wavBlob = this.createWavBlob(this.audioChunks, 16000);
+
+                if (wavBlob.size < 1000) {
+                    throw new Error('Audio quá ngắn');
+                }
+
+                const formData = new FormData();
+                formData.append('audioFile', wavBlob, 'recording.wav');
+                formData.append('__RequestVerificationToken',
+                    document.querySelector('input[name="__RequestVerificationToken"]').value);
+
+                const response = await fetch('/Ais/ProcessVoiceChat', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`Server error: ${errorText}`);
+                }
+
+                const audioBlob = await response.blob();
+                const audioUrl = URL.createObjectURL(audioBlob);
+                this.playAudio(audioUrl);
+
+            } catch (error) {
+                console.log('Lỗi xử lý: ' + error.message);
+            } finally {
+                this.hideProcessing();
+            }
+        }
+
+        isSilent(chunks) {
+            const threshold = 100; // Ngưỡng để xác định im lặng, bạn có thể cần điều chỉnh
+            let totalSamples = 0;
+            let sumOfSquares = 0;
+
+            for (const chunk of chunks) {
+                for (let i = 0; i < chunk.length; i++) {
+                    const sample = chunk[i];
+                    sumOfSquares += sample * sample;
+                }
+                totalSamples += chunk.length;
+            }
+
+            if (totalSamples === 0) return true;
+
+            // Tính toán Root Mean Square-một cách đo năng lượng/độ lớn của tín hiệu
+            const rms = Math.sqrt(sumOfSquares / totalSamples);
+            return rms < threshold;
+        }
+
+        createWavBlob(audioChunks, sampleRate) {
+            // Gộp tất cả audio chunks
+            let totalLength = 0;
+            audioChunks.forEach(chunk => totalLength += chunk.length);
+
+            const audioData = new Int16Array(totalLength);
+            let offset = 0;
+            audioChunks.forEach(chunk => {
+                audioData.set(chunk, offset);
+                offset += chunk.length;
+            });
+
+            // Tạo WAV header
+            const buffer = new ArrayBuffer(44 + audioData.length * 2);
+            const view = new DataView(buffer);
+
+            // WAV header
+            const writeString = (offset, string) => {
+                for (let i = 0; i < string.length; i++) {
+                    view.setUint8(offset + i, string.charCodeAt(i));
+                }
+            };
+
+            writeString(0, 'RIFF');
+            view.setUint32(4, 36 + audioData.length * 2, true);
+            writeString(8, 'WAVE');
+            writeString(12, 'fmt ');
+            view.setUint32(16, 16, true);
+            view.setUint16(20, 1, true);
+            view.setUint16(22, 1, true);
+            view.setUint32(24, sampleRate, true);
+            view.setUint32(28, sampleRate * 2, true);
+            view.setUint16(32, 2, true);
+            view.setUint16(34, 16, true);
+            writeString(36, 'data');
+            view.setUint32(40, audioData.length * 2, true);
+
+            // Audio data
+            const audioBytes = new Uint8Array(buffer, 44);
+            for (let i = 0; i < audioData.length; i++) {
+                const sample = audioData[i];
+                audioBytes[i * 2] = sample & 0xff;
+                audioBytes[i * 2 + 1] = (sample >> 8) & 0xff;
+            }
+
+            return new Blob([buffer], { type: 'audio/wav' });
+        }
+
+        playAudio(url) {
+            const audio = new Audio(url);
+            this.currentAudio = audio;
+            audio.play();
+
+            audio.onplay = () => {
+                this.isPlaying = true;
+                this.aiAvatar.classList.add('speaking');
+                this.updateButton();
+            };
+
+            audio.onended = () => {
+                this.isPlaying = false;
+                this.aiAvatar.classList.remove('speaking');
+                this.updateButton();
+                URL.revokeObjectURL(url);
+            };
+        }
+
+        stopPlaying() {
+            if (this.currentAudio) {
+                this.currentAudio.pause();
+                this.currentAudio.currentTime = 0;
+                this.isPlaying = false;
+                this.aiAvatar.classList.remove('speaking');
+                this.updateButton();
+            }
         }
 
         showListening() {
             this.listeningIndicator.style.display = 'block';
-            this.updateVoiceButton();
+            this.updateButton();
         }
 
-        stopListening() {
-            if (this.recognition && this.isListening) {
-                this.recognition.stop();
-            }
-        }
-
-        startSpeaking(text) {
-            if (!this.synthesis) {
-                alert('Trình duyệt không hỗ trợ text-to-speech');
-                return;
-            }
-
-            this.synthesis.cancel();
-            const utterance = this.createUtterance(text);
-            this.synthesis.speak(utterance);
-        }
-
-        stopSpeaking() {
-            this.synthesis.cancel();
-            this.isSpeaking = false;
-            this.aiAvatar.classList.remove('speaking');
-            this.updateVoiceButton();
+        hideListening() {
+            this.listeningIndicator.style.display = 'none';
         }
 
         showProcessing() {
-            this.hideAllIndicators();
-            this.isProcessing = true;
             this.processingIndicator.style.display = 'block';
             this.voiceButton.classList.add('hidden');
         }
 
-        hideAllIndicators() {
-            this.listeningIndicator.style.display = 'none';
+        hideProcessing() {
             this.processingIndicator.style.display = 'none';
-            this.isListening = false;
-            this.isProcessing = false;
             this.voiceButton.classList.remove('hidden');
+            this.updateButton();
         }
 
-        updateVoiceButton() {
-            if (this.isListening) {
-                this.voiceButton.querySelector('.btn-text').textContent = 'Nhấn để dừng ghi âm';
-                this.voiceButton.classList.remove('speaking');
-                this.voiceButton.classList.add('listening');
-            } else if (this.isSpeaking) {
-                this.voiceButton.querySelector('.btn-text').textContent = 'Nhấn để dừng phát';
-                this.voiceButton.classList.remove('listening');
-                this.voiceButton.classList.add('speaking');
+        updateButton() {
+            const btn = this.voiceButton;
+            const text = btn.querySelector('.btn-text');
+
+            btn.classList.remove('listening', 'speaking');
+
+            if (this.isRecording) {
+                text.textContent = 'Nhấn để dừng ghi âm';
+                btn.classList.add('listening');
+            } else if (this.isPlaying) {
+                text.textContent = 'Nhấn để dừng phát';
+                btn.classList.add('speaking');
             } else {
-                this.voiceButton.querySelector('.btn-text').textContent = 'Nhấn để nói chuyện với tôi';
-                this.voiceButton.classList.remove('listening', 'speaking');
-            }
-        }
-
-        async handleUserSpeech(transcript) {
-            this.showProcessing();
-
-            console.log("log : ", transcript);
-
-            try {
-                const response = await fetch('/Ais/AskGemini', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]')?.value || ''
-                    },
-                    body: JSON.stringify({ question: transcript })
-                });
-
-                if (!response.ok) {
-                    throw new Error('Lỗi từ server');
-                }
-
-                const data = await response.json();
-                this.hideAllIndicators();
-                this.startSpeaking(data.answer);
-
-            } catch (error) {
-                this.hideAllIndicators();
-                const errorMsg = 'Xin lỗi, tôi không thể xử lý câu hỏi của bạn lúc này.';
-                this.startSpeaking(errorMsg);
-                console.error(`Lỗi: ${error.message}`);
+                text.textContent = 'Nhấn để nói chuyện với tôi';
             }
         }
     }
 
-    // Khởi tạo ứng dụng VoiceChat khi DOM đã load xong
-    document.addEventListener('DOMContentLoaded', () => {
-        new VoiceChat();
-    });
+    document.addEventListener('DOMContentLoaded', () => new VoiceChat());
 </script>
 
