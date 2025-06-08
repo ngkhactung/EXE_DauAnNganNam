@@ -12,8 +12,8 @@
 
     <!-- favicons -->
     <link rel="apple-touch-icon" sizes="180x180" href="~/images/favicon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="~/images/favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="~/images/favicon/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="~/images/logoDauAnNganNam.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="~/images/logoDauAnNganNam.png">
     <link rel="manifest" href="~/images/favicon/site.webmanifest">
 
     <!-- Fonts URL -->
@@ -54,7 +54,7 @@
                 <div class="inner-container">
                     <div class="logo-box">
 						<a href="/Home/Index">
-                            <img src="~/images/logo-light-1-1.png" alt="" width="150">
+                            <img src="~/images/logoDauAnNganNam.png" alt="" width="150">
                         </a>
                         <a href="#" class="side-menu__toggler"><i class="muzex-icon-menu"></i></a>
                     </div><!-- /.logo-box -->
@@ -145,9 +145,9 @@
             <div class="site-footer__bottom">
                 <div class="container">
                     <div class="inner-container">
-                        <p>&copy; Copyright 2020 Muzex.</p>
+                        <p>&copy; Copyright 2020 Kim Ấn.</p>
                         <a href="/Home/Index" class="site-footer__bottom-logo">
-                            <img src="~/images/logo-footer-1.png" alt="">
+                            <img src="~/images/logoDauAnNganNam.png" width="190px" alt="">
                         </a>
                         <div class="site-footer__bottom-links">
                             <a href="#">Điều khoản & Chính sách.</a>
@@ -159,8 +159,9 @@
     </div><!-- /.page-wrapper -->
 
     <div class="chatbot"> <!-- Chatbot Widget -->
-        <div id="chatbot-widget">
-            <div id="chat-header" onclick="toggleChat()">💬 Hỏi Đáp</div>
+        <div id="chat-toggle" class="closed" onclick="toggleChat()"></div>
+        <div id="chatbot-widget" class="closed">
+            <div id="chat-header" onclick="toggleChat()">💬 Hỏi Đáp</div>
             <div id="chat-body" style="display:none;">
                 @Html.AntiForgeryToken()
                 <div id="chat-messages"></div>
@@ -189,7 +190,7 @@
         </div><!-- /.side-content__block-overlay -->
         <div class="side-content__block-inner ">
             <a href="index.html">
-                <img src="~/images/logo-1-1.png" alt="" width="143">
+                <img src="~/images/logoDauAnNganNam.png" alt="" width="143">
             </a>
             <div class="side-content__block-about">
                 <h3 class="side-content__block__title">Về Chúng Tôi</h3>
@@ -217,7 +218,7 @@
                     </li>
                 </ul>
             </div><!-- /.side-content__block-contact -->
-            <p class="side-content__block__text site-footer__copy-text"><a href="#">Muzex</a> <i class="fa fa-copyright"></i> 2020 All Right Reserved</p>
+            <p class="side-content__block__text site-footer__copy-text"><a href="#">Kim Ấn</a> <i class="fa fa-copyright"></i> 2020 All Right Reserved</p>
         </div><!-- /.side-content__block-inner -->
     </div><!-- /.side-content__block -->
 
@@ -233,11 +234,11 @@
         </div><!-- /.side-menu__block-overlay -->
 
         <div class="side-menu__block-inner ">
-            <a href="index.html" class="side-menu__logo"><img src="~/images/logo-light-1-1.png" alt="" width="143"></a>
+            <a href="index.html" class="side-menu__logo"><img src="~/images/logoDauAnNganNam.png" alt="" width="143"></a>
             <nav class="mobile-nav__container">
                 <!-- content is loading via js -->
             </nav>
-            <p class="side-menu__block__copy">(c) 2020 <a href="#">Muzex</a> - All rights reserved.</p>
+            <p class="side-menu__block__copy">(c) 2020 <a href="#">Kim Ấn</a> - All rights reserved.</p>
             <div class="side-menu__social">
                 <a href="#"><i class="fab fa-facebook-f"></i></a>
                 <a href="#"><i class="fab fa-google-plus"></i></a>
@@ -248,7 +249,7 @@
         </div><!-- /.side-menu__block-inner -->
     </div><!-- /.side-menu__block -->
 
-    <a href="#" data-target="html" class="scroll-to-target scroll-to-top"><i class="fa fa-angle-up"></i></a>
+    @* <a href="#" data-target="html" class="scroll-to-target scroll-to-top"><i class="fa fa-angle-up"></i></a> *@
 
     <!-- Template JS -->
 

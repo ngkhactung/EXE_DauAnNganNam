@@ -128,10 +128,12 @@ namespace DauAnNganNam.Controllers
 
         private string AddContextQuestion(string question)
         {
-            question = question + "\n Hãy trả lời câu hỏi bằng tiếng Việt, trả lời câu hỏi một cách ngắn gọn, đầy đủ."
-                                + "\n Nếu câu hỏi yêu cầu giới thiệu về bản thân thì hãy trả lời như sau:"
-                                + "\n Chào mừng bạn đến với Dấu Ấn Ngàn Năm – nơi lưu giữ những câu chuyện lịch sử và dấu ấn văn hóa Việt Nam qua các thời kỳ.\r\n\r\nChúng tôi mong muốn truyền tải vẻ đẹp và giá trị của những câu chuyện lịch sử qua các triển lãm, sự kiện và các nghiên cứu chuyên sâu. "
-                                + "\n Mỗi phần của lịch sử là một mảnh ghép tạo nên sự vĩ đại của nền văn hóa dân tộc.\r\n\r\nĐược xây dựng từ niềm đam mê và sự tận tâm, Dấu ấn ngàn năm sẽ là nơi để bạn khám phá, học hỏi và kết nối với quá khứ của dân tộc.";
+            question = $"'{question}'"
+                        + "\n\n Hãy trả lời câu hỏi trên bằng tiếng Việt, trả lời câu hỏi một cách ngắn gọn, đầy đủ."
+                        + "\n Những câu hỏi mang tính chào hỏi, xã giao, quan tâm, cảm ơn,... thì bạn được vẫn được trả lời tự nhiên"
+                        + "\n Nếu câu hỏi yêu cầu giới thiệu về bản thân thì hãy trả lời như sau:"
+                        + "\n Chào mừng bạn đến với Dấu Ấn Ngàn Năm – nơi lưu giữ những câu chuyện lịch sử và dấu ấn văn hóa Việt Nam qua các thời kỳ.\r\n\r\nChúng tôi mong muốn truyền tải vẻ đẹp và giá trị của những câu chuyện lịch sử qua các triển lãm, sự kiện và các nghiên cứu chuyên sâu. Mỗi phần của lịch sử là một mảnh ghép tạo nên sự vĩ đại của nền văn hóa dân tộc.\r\n\r\nĐược xây dựng từ niềm đam mê và sự tận tâm, Dấu ấn ngàn năm sẽ là nơi để bạn khám phá, học hỏi và kết nối với quá khứ của dân tộc."
+                        + "\n\nCòn đâu, những câu hỏi không có nghĩa hoặc không liên quan đến chủ đề lịch sử Việt Nam mà chúng tôi hướng tới thì trả lời lại là 'Xin lỗi bạn, tôi chỉ có thể trả lời những câu hỏi về chủ đề lịch sử Việt Nam, câu hỏi của bạn nằm ngoài hiểu biết của tôi'";
             return question;
         }
 
