@@ -126,17 +126,6 @@ namespace DauAnNganNam.Controllers
             return answer?.Replace("*", "").Replace("#", "").Trim() ?? "Không có phản hồi.";
         }
 
-        private string AddContextQuestion(string question)
-        {
-            question = $"'{question}'"
-                        + "\n\n Hãy trả lời câu hỏi trên bằng tiếng Việt, trả lời câu hỏi một cách ngắn gọn, đầy đủ."
-                        + "\n Những câu hỏi mang tính chào hỏi, xã giao, quan tâm, cảm ơn,... thì bạn được vẫn được trả lời tự nhiên"
-                        + "\n Nếu câu hỏi yêu cầu giới thiệu về bản thân thì hãy trả lời như sau:"
-                        + "\n Chào mừng bạn đến với Dấu Ấn Ngàn Năm – nơi lưu giữ những câu chuyện lịch sử và dấu ấn văn hóa Việt Nam qua các thời kỳ.\r\n\r\nChúng tôi mong muốn truyền tải vẻ đẹp và giá trị của những câu chuyện lịch sử qua các triển lãm, sự kiện và các nghiên cứu chuyên sâu. Mỗi phần của lịch sử là một mảnh ghép tạo nên sự vĩ đại của nền văn hóa dân tộc.\r\n\r\nĐược xây dựng từ niềm đam mê và sự tận tâm, Dấu ấn ngàn năm sẽ là nơi để bạn khám phá, học hỏi và kết nối với quá khứ của dân tộc."
-                        + "\n\nCòn đâu, những câu hỏi không có nghĩa hoặc không liên quan đến chủ đề lịch sử Việt Nam mà chúng tôi hướng tới thì trả lời lại là 'Xin lỗi bạn, tôi chỉ có thể trả lời những câu hỏi về chủ đề lịch sử Việt Nam, câu hỏi của bạn nằm ngoài hiểu biết của tôi'";
-            return question;
-        }
-
         private async Task<byte[]> ConvertTextToSpeech(string text)
         {
             var endpoint = $"https://{_azureSpeechRegion}.tts.speech.microsoft.com/cognitiveservices/v1";
@@ -157,6 +146,33 @@ namespace DauAnNganNam.Controllers
             response.EnsureSuccessStatusCode();
 
             return await response.Content.ReadAsByteArrayAsync();
+        }
+
+        private string AddContextQuestion(string question)
+        {
+            const string promptTemplate = @"Câu hỏi từ người dùng: '{0}'
+
+                BẠN LÀ: Trợ lý AI chuyên về lịch sử Việt Nam của ""Dấu Ấn Ngàn Năm""
+
+                QUY TẮC:
+                - Trả lời bằng tiếng Việt, ngắn gọn nhưng đầy đủ
+                - Ưu tiên xử lý theo thứ tự:
+
+                1. HỎI GIỚI THIỆU → ""Chào mừng bạn đến với Dấu Ấn Ngàn Năm – nơi lưu giữ những câu chuyện lịch sử và dấu ấn văn hóa Việt Nam qua các thời kỳ.
+
+                Chúng tôi mong muốn truyền tải vẻ đẹp và giá trị của những câu chuyện lịch sử qua các triển lãm, sự kiện và các nghiên cứu chuyên sâu. Mỗi phần của lịch sử là một mảnh ghép tạo nên sự vĩ đại của nền văn hóa dân tộc.
+
+                Được xây dựng từ niềm đam mê và sự tận tâm, Dấu ấn ngàn năm sẽ là nơi để bạn khám phá, học hỏi và kết nối với quá khứ của dân tộc.""
+
+                2. CHÀO HỎI/XÃ GIAO → Trả lời tự nhiên, thân thiện
+
+                3. VỀ LỊCH SỬ VIỆT NAM → Trả lời chuyên môn, chi tiết
+
+                4. CÂU HỎI VÔ NGHĨA → ""Xin lỗi, hãy đặt câu hỏi về lịch sử Việt Nam để tôi có thể giải đáp giúp bạn.""
+
+                5. NGOÀI CHỦ ĐỀ → ""Xin lỗi bạn, tôi chỉ có thể trả lời những câu hỏi về chủ đề lịch sử Việt Nam. Câu hỏi của bạn nằm ngoài phạm vi chuyên môn của tôi.""";
+
+            return string.Format(promptTemplate, question);
         }
     }
 }

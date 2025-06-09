@@ -2,11 +2,15 @@
     const body = document.getElementById("chat-body");
     const widget = document.getElementById("chatbot-widget");
     const toggle = document.getElementById("chat-toggle");
+    const chatContent  = document.getElementById("chat-messages");
 
     if (body.style.display === "none") {
         body.style.display = "block";
         widget.classList.remove("closed");
         toggle.classList.remove("closed");
+        if (chatContent.children.length === 0) {
+            appendMessage("bot", "Xin chào bạn, mình là trợ lý ảo Kim Ấn rất vui khi có thể giải đáp câu hỏi của bạn về chủ đề lịch sử Việt Nam!");
+        }
         toggle.classList.add("open");
     } else {
         body.style.display = "none";
