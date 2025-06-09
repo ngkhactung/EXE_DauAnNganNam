@@ -86,11 +86,19 @@ namespace DauAnNganNam.Controllers
 
         private async Task<string> ConvertSpeechToText(IFormFile audioFile)
         {
-            model.Question = model.Question + "\n Hãy trả lời câu hỏi bằng tiếng Việt, trả lời câu hỏi một cách ngắn gọn, đầy đủ.";
-            model.Question = model.Question + "\n Nếu câu hỏi yêu cầu giới thiệu về bản thân thì hãy trả lời như sau:"
-                            + "\n Chào mừng bạn đến với Dấu Ấn Ngàn Năm – nơi lưu giữ những câu chuyện lịch sử và dấu ấn văn hóa Việt Nam qua các thời kỳ.\r\n\r\nChúng tôi mong muốn truyền tải vẻ đẹp và giá trị của những câu chuyện lịch sử qua các triển lãm, sự kiện và các nghiên cứu chuyên sâu. Mỗi phần của lịch sử là một mảnh ghép tạo nên sự vĩ đại của nền văn hóa dân tộc.\r\n\r\nĐược xây dựng từ niềm đam mê và sự tận tâm, Dấu ấn ngàn năm sẽ là nơi để bạn khám phá, học hỏi và kết nối với quá khứ của dân tộc.";
-            model.Question = model.Question + "\n Nếu yêu cầu về model của mình hãy giới thiêu là từ dự án \"Dấu ấn ngàn năm\", và không giới thiệu từ google";
-            return model;
+            var endpoint = $"https://{_azureSpeechRegion}.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1?language=vi-VN";
+
+            using var request = new HttpRequestMessage(HttpMethod.Post, endpoint);
+            request.Headers.Add("Ocp-Apim-Subscription-Key", _azureSpeechKey);
+            request.Content = new StreamContent(audioFile.OpenReadStream());
+            request.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("audio/wav");
+
+            var response = await _httpClient.SendAsync(request);
+            response.EnsureSuccessStatusCode();
+
+            var json = await response.Content.ReadAsStringAsync();
+            var doc = JsonDocument.Parse(json);
+            return doc.RootElement.GetProperty("DisplayText").GetString() ?? "";
         }
 
         private async Task<string> GetGeminiResponse(string question)
