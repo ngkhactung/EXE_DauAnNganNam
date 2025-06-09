@@ -1,0 +1,52 @@
+﻿@model DauAnNganNam.Models.News
+@{
+    ViewData["Title"] = "Create Blog";
+}
+<section class="" style="height: 120px; background-color: #252930; margin-bottom: 5px">
+    <div></div>
+</section>
+
+<section class="page-header" style="background-image: url(/images/backgrounds/page-header-bg-1-1.jpg);">
+    <div class="container">
+        <h2>Create Blog</h2>
+    </div><!-- /.container -->
+</section><!-- /.page-header -->
+
+<section class="faq-one">
+    <div class="container">
+        <form method="post" enctype="multipart/form-data">
+            <div>
+                <label for="Title">Title</label>
+                <input type="text" name="Title"  />
+            </div>
+
+            <div>
+                <label for="Content">Content</label>
+                <!-- CKEditor container -->
+                <textarea name="Content" id="editor" rows="10"></textarea>
+            </div>
+
+
+            <button type="submit">Create</button>
+        </form>
+    </div>
+</section>
+
+<script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
+
+<script>
+    ClassicEditor
+        .create(document.querySelector('#editor'), {
+            // Cấu hình CKEditor để hỗ trợ chèn ảnh
+            ckfinder: {
+                uploadUrl: 'UploadImage' 
+            },
+            toolbar: ['heading', '|', 'bold', 'italic', 'link', '|', 'bulletedList', 'numberedList', '|', 'insertImage']
+        })
+        .catch(error => {
+            console.error(error);
+        });
+</script>
+
+
+

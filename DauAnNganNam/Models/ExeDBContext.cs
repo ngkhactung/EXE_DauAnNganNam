@@ -26,6 +26,7 @@ public partial class ExeDBContext : DbContext
     public virtual DbSet<ProductCategory> ProductCategories { get; set; }
 
     public virtual DbSet<Role> Roles { get; set; }
+    public virtual DbSet<Blogs> Blogs { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
