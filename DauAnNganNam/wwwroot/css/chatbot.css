@@ -1,4 +1,30 @@
-﻿#chatbot-widget {
+﻿#chat-toggle {
+    width: 80px;
+    height: 80px;
+    background: url('/images/voice-chat/ai-avatar-1.jpg') no-repeat center center;
+    background-size: cover;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    position: fixed;
+    bottom: 40px;
+    right: 35px;
+    z-index: 9999;
+}
+
+#chatbot-widget.closed {
+    display: none;
+}
+
+#chat-toggle.closed {
+    display: block;
+}
+
+#chat-toggle.open {
+    display: none;
+}
+
+#chatbot-widget {
     position: fixed;
     bottom: 20px;
     right: 20px;
@@ -9,7 +35,7 @@
 }
 
 #chat-header {
-    background: #007bff;
+    background: #d18550;
     color: white;
     padding: 10px;
     border-radius: 10px 10px 0 0;
@@ -54,7 +80,7 @@
 }
 
 .user {
-    background-color: #007bff;
+    background-color: #d18550;
     color: white;
     float: right;
 }

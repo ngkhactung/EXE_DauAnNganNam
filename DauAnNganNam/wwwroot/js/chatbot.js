@@ -1,6 +1,19 @@
 ﻿function toggleChat() {
     const body = document.getElementById("chat-body");
-    body.style.display = body.style.display === "none" ? "block" : "none";
+    const widget = document.getElementById("chatbot-widget");
+    const toggle = document.getElementById("chat-toggle");
+
+    if (body.style.display === "none") {
+        body.style.display = "block";
+        widget.classList.remove("closed");
+        toggle.classList.remove("closed");
+        toggle.classList.add("open");
+    } else {
+        body.style.display = "none";
+        widget.classList.add("closed");
+        toggle.classList.remove("open");
+        toggle.classList.add("closed");
+    }
 }
 
 function handleKey(event) {

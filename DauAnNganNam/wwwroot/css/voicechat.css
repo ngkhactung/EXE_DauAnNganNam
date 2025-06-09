@@ -63,7 +63,7 @@ body {
 .avatar-container {
     position: relative;
     display: inline-block;
-    margin-bottom: 50px;
+    margin-bottom: 40px;
     max-width: 280px; /* Giới hạn tối đa trên desktop */
     width: 100%; /* Tự động điều chỉnh trên mobile */
 }
@@ -309,6 +309,7 @@ body {
     }
 
     .ai-avatar-section {
+        margin-top: -20px;
         max-width: 100%;
     }
 
