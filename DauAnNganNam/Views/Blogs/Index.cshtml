@@ -1,97 +1,283 @@
-﻿@* Thay đổi model thành BlogIndexViewModel *@
-@model DauAnNganNam.ViewModel.BlogIndexViewModel
-
-@{
-    ViewData["Title"] = "Tin Tức";
-
-    // Hàm trợ giúp để tạo tóm tắt nội dung
-    string CreateSummary(string htmlContent, int maxLength = 120)
-    {
-        if (string.IsNullOrEmpty(htmlContent))
-        {
-            return "Nội dung đang được cập nhật...";
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blog Lịch Sử</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+          rel="stylesheet" />
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" />
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
         }
-        var plainText = System.Text.RegularExpressions.Regex.Replace(htmlContent, "<.*?>", string.Empty);
-        plainText = System.Net.WebUtility.HtmlDecode(plainText);
-        return plainText.Length <= maxLength ? plainText : plainText.Substring(0, maxLength) + "...";
-    }
-}
 
-<!-- Page Header -->
-<section class="page-header" style="background-image: url(/assets/images/backgrounds/page-header-bg-1-1.jpg);">
-    <div class="container">
-        <h2>Tin Tức</h2>
-    </div>
-</section>
+        .burgundy {
+            background-color: #9c2b2b;
+        }
 
-<!-- Blog Grid Page Section -->
-<section class="blog-one blog-grid-page">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                @* Kiểm tra xem Model có bài viết nào không *@
-                @if (Model.Blogs != null && Model.Blogs.Any())
-                {
-                    <div class="row">
-                        @foreach (var blog in Model.Blogs)
-                        {
-                            <div class="col-md-6">
-                                <div class="blog-one__single">
-                                    <div class="blog-one__image">
-                                        @* Sửa lỗi: Lấy ImageUrl từ phần tử cuối cùng của danh sách Images. Dùng ảnh mặc định nếu danh sách rỗng. *@
-                                        <img src="@(blog.Images != null && blog.Images.Any() ? blog.Images.Last().ImageUrl : "https://placehold.co/570x400/eeeeee/333333?text=Tin+Tuc")" alt="@blog.Title">
-                                        <div class="blog-one__date">
-                                            <i class="far fa-calendar-alt"></i>
-                                            @if (blog.CreateDate != null) { ((DateOnly)(blog.CreateDate)).ToString("dd/MM/yyyy"); }
-                                        </div>
-                                    </div>
-                                    <div class="blog-one__content">
-                                        <ul class="blog-one__meta list-unstyled">
-                                            <li><a href="#">By Admin</a></li>
-                                            <li><a href="#">03 Comments</a></li>
-                                        </ul>
-                                        <h3><a asp-action="NewsDetails" asp-controller="Blogs" asp-route-id="@blog.NewsId">@blog.Title</a></h3>
-                                        <p>
-                                            @CreateSummary(blog.Content)
-                                        </p>
-                                        <a asp-action="NewsDetails" asp-controller="Blogs" asp-route-id="@blog.NewsId" class="blog-one__link">Learn More</a>
-                                    </div>
-                                </div>
-                            </div>
-                        }
+        .burgundy-text {
+            color: #9c2b2b;
+        }
+
+        .light-pink {
+            background-color: #fde8e8;
+        }
+
+        .beige {
+            background-color: #f5f5dc;
+        }
+
+        .truncate-single-line {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#9c2b2b",
+                        secondary: "#f5f5dc",
+                    },
+                    borderRadius: {
+                        sm: "4px", DEFAULT: "8px", md: "12px",
+                        lg: "16px", xl: "20px", "2xl": "24px",
+                        "3xl": "32px", full: "9999px", button: "8px",
+                    },
+                },
+            },
+        };
+    </script>
+</head>
+<body class="min-h-screen">
+
+    <section class="py-10">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center burgundy-text mb-10">
+                Khoảnh khắc đáng nhớ
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="light-pink rounded overflow-hidden shadow-sm">
+                    <div class="h-48 bg-gray-400" style="background-image: url('https://readdy.ai/api/search-image?query=historical%2520Vietnamese%2520scene%2520with%2520traditional%2520architecture%2520and%2520costumes%2520in%2520a%2520peaceful%2520setting%2520with%2520mountains%2520in%2520background%2520ancient%2520style%2520drawing&width=400&height=300&seq=1&orientation=landscape'); background-size: cover; background-position: center;"></div>
+                    <div class="p-4">
+                        <div class="text-xs text-gray-500 mb-2">26/06/2025</div>
+                        <h3 class="text-lg font-semibold mb-2 truncate-single-line">Hồn Việt trong kiến trúc xưa</h3>
+                        <p class="text-sm text-gray-600 truncate-single-line">Nét đẹp cổ kính và yên bình của làng quê Việt Nam qua các công trình kiến trúc truyền thống.</p>
                     </div>
+                </div>
+                <div class="light-pink rounded overflow-hidden shadow-sm">
+                    <div class="h-48 bg-gray-400" style="background-image: url('https://readdy.ai/api/search-image?query=ancient%2520Vietnamese%2520emperor%2520in%2520traditional%2520royal%2520costume%2520sitting%2520on%2520throne%2520with%2520court%2520officials%2520in%2520imperial%2520palace%2520historical%2520scene%2520ancient%2520style%2520drawing&width=400&height=300&seq=2&orientation=landscape'); background-size: cover; background-position: center;"></div>
+                    <div class="p-4">
+                        <div class="text-xs text-gray-500 mb-2">25/06/2025</div>
+                        <h3 class="text-lg font-semibold mb-2 truncate-single-line">Uy quyền chốn cung đình</h3>
+                        <p class="text-sm text-gray-600 truncate-single-line">Khung cảnh triều đình xưa với vua và các quan trong trang phục nghi lễ trang trọng.</p>
+                    </div>
+                </div>
+                <div class="light-pink rounded overflow-hidden shadow-sm">
+                    <div class="h-48 bg-gray-400" style="background-image: url('https://readdy.ai/api/search-image?query=historical%2520Vietnamese%2520battle%2520scene%2520with%2520warriors%2520on%2520horseback%2520traditional%2520weapons%2520and%2520flags%2520in%2520dramatic%2520landscape%2520ancient%2520style%2520drawing&width=400&height=300&seq=3&orientation=landscape'); background-size: cover; background-position: center;"></div>
+                    <div class="p-4">
+                        <div class="text-xs text-gray-500 mb-2">24/06/2025</div>
+                        <h3 class="text-lg font-semibold mb-2 truncate-single-line">Hào khí trên chiến trường</h3>
+                        <p class="text-sm text-gray-600 truncate-single-line">Tái hiện cảnh trận mạc oai hùng của các chiến binh Việt trên lưng ngựa.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-                    <!-- Pagination Section -->
-                    <div class="text-center d-flex justify-content-center">
-                        <div class="post-pagination">
-                            @* Nút về trang trước *@
-                            @if (Model.HasPreviousPage)
-                            {
-                                <a asp-action="Index" asp-route-pageIndex="@(Model.PageIndex - 1)"><i class="fa fa-angle-left"></i></a>
-                            }
+    <section class="py-10">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center burgundy-text mb-6">Chuyện xưa, chưa từng kể như thế này</h2>
+            <p class="text-center text-gray-600 max-w-3xl mx-auto mb-10">Blog Dân Ấn Ngàn Năm là nơi chuyện xưa được kể lại bằng hơi thở hiện nay. Khám phá những nhân vật lịch sử, sự kiện nổi tiếng và di sản ngàn đời qua lối kể hiện đại, gần gũi và truyền cảm hứng.</p>
+            <div class="flex flex-col md:flex-row gap-8">
+                <div class="w-full md:w-1/4">
+                    <div class="flex flex-col" id="tab-menu">
+                        <a href="#" class="tab-link beige py-3 px-4 border-l-4 border-primary font-medium burgundy-text" data-tab="de-vuong">Chuyện các bậc đế vương</a>
+                        <a href="#" class="tab-link beige py-3 px-4 border-l-4 border-transparent hover:border-primary hover:text-primary" data-tab="su-kien">Sự kiện chấn động sử Việt</a>
+                        <a href="#" class="tab-link beige py-3 px-4 border-l-4 border-transparent hover:border-primary hover:text-primary" data-tab="di-san">Di sản & biểu tượng</a>
+                        <a href="#" class="tab-link beige py-3 px-4 border-l-4 border-transparent hover:border-primary hover:text-primary" data-tab="hau-truong">Hậu trường sáng tạo</a>
+                    </div>
+                </div>
 
-                            @* Các nút số trang *@
-                            @for (int i = 1; i <= Model.TotalPages; i++)
-                            {
-                                <a asp-action="Index" asp-route-pageIndex="@i" class="@(i == Model.PageIndex ? "active" : "")">@i</a>
-                            }
-
-                            @* Nút tới trang kế tiếp *@
-                            @if (Model.HasNextPage)
-                            {
-                                <a asp-action="Index" asp-route-pageIndex="@(Model.PageIndex + 1)"><i class="fa fa-angle-right"></i></a>
-                            }
+                <div class="w-full md:w-3/4">
+                    <div class="tab-content" data-content="de-vuong">
+                        <div class="rounded overflow-hidden shadow-md flex flex-col md:flex-row bg-white">
+                            <div class="w-full md:w-1/2 h-64 bg-cover bg-center" style="background-image: url('https://readdy.ai/api/search-image?query=portrait%20of%20a%20wise%20ancient%20Vietnamese%20emperor%20in%20royal%20costume&width=400&height=300&seq=10');"></div>
+                            <div class="w-full md:w-1/2 p-6 flex flex-col">
+                                <h3 class="text-xl font-bold burgundy-text mb-2">Chuyện các bậc đế vương</h3>
+                                <p class="text-gray-600 mb-4 flex-grow">Nghìn chính sách vua kể lại chuyện dựng nước, giữ nước và tìm đạo trị quốc của các bậc minh quân trong lịch sử Việt Nam.</p>
+                                <button class="read-more-btn mt-auto bg-gray-200 text-gray-700 px-4 py-2 !rounded-button w-max hover:bg-gray-300" data-popup="popup-de-vuong">Đọc thêm</button>
+                            </div>
                         </div>
                     </div>
-                }
-                else
-                {
-                    @* Hiển thị thông báo khi không có bài viết nào *@
-                    <div class="col-12 text-center">
-                        <h3>Chưa có tin tức gì.</h3>
+
+                    <div class="tab-content hidden" data-content="su-kien">
+                        <div class="rounded overflow-hidden shadow-md flex flex-col md:flex-row bg-white">
+                            <div class="w-full md:w-1/2 h-64 bg-cover bg-center" style="background-image: url('https://readdy.ai/api/search-image?query=epic%20vietnamese%20historical%20battle%20of%20Bach%20Dang%20river&width=400&height=300&seq=11');"></div>
+                            <div class="w-full md:w-1/2 p-6 flex flex-col">
+                                <h3 class="text-xl font-bold burgundy-text mb-2">Sự kiện chấn động sử Việt</h3>
+                                <p class="text-gray-600 mb-4 flex-grow">Từ những trận chiến lừng lẫy thay đổi vận mệnh dân tộc đến các cuộc cải cách có ảnh hưởng sâu rộng đến muôn đời sau.</p>
+                                <button class="read-more-btn mt-auto bg-gray-200 text-gray-700 px-4 py-2 !rounded-button w-max hover:bg-gray-300" data-popup="popup-su-kien">Đọc thêm</button>
+                            </div>
+                        </div>
                     </div>
-                }
+
+                    <div class="tab-content hidden" data-content="di-san">
+                        <div class="rounded overflow-hidden shadow-md flex flex-col md:flex-row bg-white">
+                            <div class="w-full md:w-1/2 h-64 bg-cover bg-center" style="background-image: url('https://readdy.ai/api/search-image?query=Temple%20of%20Literature%2C%20Hanoi%2C%20Vietnam%2C%20ancient%20architecture&width=400&height=300&seq=12');"></div>
+                            <div class="w-full md:w-1/2 p-6 flex flex-col">
+                                <h3 class="text-xl font-bold burgundy-text mb-2">Di sản & biểu tượng</h3>
+                                <p class="text-gray-600 mb-4 flex-grow">Khám phá giá trị trường tồn của các di sản văn hóa vật thể và phi vật thể, những biểu tượng đã trở thành niềm tự hào của người Việt.</p>
+                                <button class="read-more-btn mt-auto bg-gray-200 text-gray-700 px-4 py-2 !rounded-button w-max hover:bg-gray-300" data-popup="popup-di-san">Đọc thêm</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-content hidden" data-content="hau-truong">
+                        <div class="rounded overflow-hidden shadow-md flex flex-col md:flex-row bg-white">
+                            <div class="w-full md:w-1/2 h-64 bg-cover bg-center" style="background-image: url('https://readdy.ai/api/search-image?query=artist%20sketching%20historical%20vietnamese%20characters&width=400&height=300&seq=13');"></div>
+                            <div class="w-full md:w-1/2 p-6 flex flex-col">
+                                <h3 class="text-xl font-bold burgundy-text mb-2">Hậu trường sáng tạo</h3>
+                                <p class="text-gray-600 mb-4 flex-grow">Cùng tìm hiểu quá trình chúng tôi nghiên cứu, thu thập tư liệu và sáng tạo nội dung để mang lịch sử đến gần hơn với bạn đọc.</p>
+                                <button class="read-more-btn mt-auto bg-gray-200 text-gray-700 px-4 py-2 !rounded-button w-max hover:bg-gray-300" data-popup="popup-hau-truong">Đọc thêm</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="popup-de-vuong" class="popup-overlay hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+        <div class="relative max-w-4xl w-full max-h-full overflow-y-auto">
+            <div class="bg-gray-100 p-6 rounded-lg shadow-xl relative">
+                <button class="close-popup-btn absolute top-2 right-3 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
+                <div class="mb-4 text-center pt-4"><h3 class="text-lg font-bold uppercase tracking-wide text-gray-700">Chuyện các bậc đế vương</h3></div>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <div class="bg-white p-3 rounded shadow-sm"><div class="h-32 bg-gray-300 mb-2 rounded bg-cover bg-center" style="background-image: url('https://readdy.ai/api/search-image?query=ancient%2520Vietnamese%2520emperor%2520Le%20Thanh%20Tong%20portrait&width=300&height=200&seq=8');"></div><h4 class="text-sm font-bold mb-1">Lê Thánh Tông</h4><p class="text-xs text-gray-600">Vị vua anh minh bậc nhất với Hồng Đức thịnh trị.</p></div>
+                    <div class="bg-white p-3 rounded shadow-sm"><div class="h-32 bg-gray-300 mb-2 rounded bg-cover bg-center" style="background-image: url('https://readdy.ai/api/search-image?query=ancient%2520Vietnamese%2520general%20Tran%20Hung%20Dao&width=300&height=200&seq=4');"></div><h4 class="text-sm font-bold mb-1">Trần Hưng Đạo</h4><p class="text-xs text-gray-600">Thiên tài quân sự 3 lần đánh bại quân Nguyên-Mông.</p></div>
+                    <div class="bg-white p-3 rounded shadow-sm"><div class="h-32 bg-gray-300 mb-2 rounded bg-cover bg-center" style="background-image: url('https://readdy.ai/api/search-image?query=Vietnamese%20King%20Quang%20Trung&width=300&height=200&seq=14');"></div><h4 class="text-sm font-bold mb-1">Quang Trung</h4><p class="text-xs text-gray-600">Người anh hùng áo vải cờ đào, đại phá quân Thanh.</p></div>
+                </div>
             </div>
         </div>
     </div>
-</section>
+
+    <div id="popup-su-kien" class="popup-overlay hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+        <div class="relative max-w-4xl w-full max-h-full overflow-y-auto">
+            <div class="bg-gray-100 p-6 rounded-lg shadow-xl relative">
+                <button class="close-popup-btn absolute top-2 right-3 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
+                <div class="mb-4 text-center pt-4"><h3 class="text-lg font-bold uppercase tracking-wide text-gray-700">Sự kiện chấn động sử Việt</h3></div>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <div class="bg-white p-3 rounded shadow-sm"><div class="h-32 bg-gray-300 mb-2 rounded bg-cover bg-center" style="background-image: url('https://readdy.ai/api/search-image?query=ancient%2520Vietnamese%2520naval%2520battle%2520on%2520Bach%20Dang%20river&width=300&height=200&seq=6');"></div><h4 class="text-sm font-bold mb-1">Trận Bạch Đằng</h4><p class="text-xs text-gray-600">Trận thủy chiến lừng danh, chôn vùi tham vọng xâm lược.</p></div>
+                    <div class="bg-white p-3 rounded shadow-sm"><div class="h-32 bg-gray-300 mb-2 rounded bg-cover bg-center" style="background-image: url('https://readdy.ai/api/search-image?query=Dien%20Bien%20Phu%20victory%20historical%20painting&width=300&height=200&seq=15');"></div><h4 class="text-sm font-bold mb-1">Điện Biên Phủ</h4><p class="text-xs text-gray-600">Chiến thắng "lừng lẫy năm châu, chấn động địa cầu".</p></div>
+                    <div class="bg-white p-3 rounded shadow-sm"><div class="h-32 bg-gray-300 mb-2 rounded bg-cover bg-center" style="background-image: url('https://readdy.ai/api/search-image?query=declaration%20of%20independence%20vietnam%201945%20painting&width=300&height=200&seq=16');"></div><h4 class="text-sm font-bold mb-1">Tuyên ngôn Độc lập 1945</h4><p class="text-xs text-gray-600">Khai sinh ra nước Việt Nam Dân chủ Cộng hòa.</p></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="popup-di-san" class="popup-overlay hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+        <div class="relative max-w-4xl w-full max-h-full overflow-y-auto">
+            <div class="bg-gray-100 p-6 rounded-lg shadow-xl relative">
+                <button class="close-popup-btn absolute top-2 right-3 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
+                <div class="mb-4 text-center pt-4"><h3 class="text-lg font-bold uppercase tracking-wide text-gray-700">Di sản & Biểu tượng</h3></div>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <div class="bg-white p-3 rounded shadow-sm"><div class="h-32 bg-gray-300 mb-2 rounded bg-cover bg-center" style="background-image: url('https://readdy.ai/api/search-image?query=Temple%20of%20Literature%2C%20Hanoi%2C%20Vietnam%2C%20ancient%20architecture&width=300&height=200&seq=12');"></div><h4 class="text-sm font-bold mb-1">Văn Miếu - Quốc Tử Giám</h4><p class="text-xs text-gray-600">Trường đại học đầu tiên của Việt Nam, biểu tượng của tri thức.</p></div>
+                    <div class="bg-white p-3 rounded shadow-sm"><div class="h-32 bg-gray-300 mb-2 rounded bg-cover bg-center" style="background-image: url('https://readdy.ai/api/search-image?query=Ha%20Long%20Bay%20Vietnam%20UNESCO%20heritage%20site&width=300&height=200&seq=17');"></div><h4 class="text-sm font-bold mb-1">Vịnh Hạ Long</h4><p class="text-xs text-gray-600">Di sản thiên nhiên thế giới với vẻ đẹp kỳ vĩ, độc đáo.</p></div>
+                    <div class="bg-white p-3 rounded shadow-sm"><div class="h-32 bg-gray-300 mb-2 rounded bg-cover bg-center" style="background-image: url('https://readdy.ai/api/search-image?query=Vietnamese%20Ao%20Dai%20traditional%20dress%20painting&width=300&height=200&seq=18');"></div><h4 class="text-sm font-bold mb-1">Áo Dài</h4><p class="text-xs text-gray-600">Trang phục truyền thống tôn vinh vẻ đẹp của người phụ nữ Việt.</p></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="popup-hau-truong" class="popup-overlay hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+        <div class="relative max-w-4xl w-full max-h-full overflow-y-auto">
+            <div class="bg-gray-100 p-6 rounded-lg shadow-xl relative">
+                <button class="close-popup-btn absolute top-2 right-3 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
+                <div class="mb-4 text-center pt-4"><h3 class="text-lg font-bold uppercase tracking-wide text-gray-700">Hậu trường sáng tạo</h3></div>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <div class="bg-white p-3 rounded shadow-sm"><div class="h-32 bg-gray-300 mb-2 rounded bg-cover bg-center" style="background-image: url('https://readdy.ai/api/search-image?query=historian%20researching%20in%20library%20with%20old%20books&width=300&height=200&seq=19');"></div><h4 class="text-sm font-bold mb-1">Quá trình nghiên cứu</h4><p class="text-xs text-gray-600">Đội ngũ tìm tòi, xác minh thông tin từ các nguồn sử liệu uy tín.</p></div>
+                    <div class="bg-white p-3 rounded shadow-sm"><div class="h-32 bg-gray-300 mb-2 rounded bg-cover bg-center" style="background-image: url('https://readdy.ai/api/search-image?query=artist%20sketching%20historical%20vietnamese%20characters&width=300&height=200&seq=13');"></div><h4 class="text-sm font-bold mb-1">Phác thảo nhân vật</h4><p class="text-xs text-gray-600">Từ những nét vẽ đầu tiên đến tạo hình nhân vật lịch sử sống động.</p></div>
+                    <div class="bg-white p-3 rounded shadow-sm"><div class="h-32 bg-gray-300 mb-2 rounded bg-cover bg-center" style="background-image: url('https://readdy.ai/api/search-image?query=digital%20artist%20creating%20historical%203D%20scene%20on%20computer&width=300&height=200&seq=20');"></div><h4 class="text-sm font-bold mb-1">Dựng lại bối cảnh</h4><p class="text-xs text-gray-600">Sử dụng công nghệ để tái hiện không gian, bối cảnh lịch sử chân thực.</p></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script id="main-script">
+        document.addEventListener("DOMContentLoaded", function () {
+            // --- TAB SWITCHING LOGIC ---
+            const tabLinks = document.querySelectorAll(".tab-link");
+            const tabContents = document.querySelectorAll(".tab-content");
+
+            tabLinks.forEach(link => {
+                link.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    const tabId = this.dataset.tab;
+
+                    // Update active styles for links
+                    tabLinks.forEach(item => {
+                        item.classList.remove("border-primary", "burgundy-text");
+                        item.classList.add("border-transparent");
+                    });
+                    this.classList.add("border-primary", "burgundy-text");
+                    this.classList.remove("border-transparent");
+
+                    // Show/hide content panes
+                    tabContents.forEach(content => {
+                        if (content.dataset.content === tabId) {
+                            content.classList.remove("hidden");
+                        } else {
+                            content.classList.add("hidden");
+                        }
+                    });
+                });
+            });
+
+            // --- POPUP HANDLING LOGIC ---
+            const readMoreButtons = document.querySelectorAll(".read-more-btn");
+            const closePopupButtons = document.querySelectorAll(".close-popup-btn");
+            const popupOverlays = document.querySelectorAll(".popup-overlay");
+
+            // Open popup
+            readMoreButtons.forEach(button => {
+                button.addEventListener("click", function () {
+                    const popupId = this.dataset.popup;
+                    const popup = document.getElementById(popupId);
+                    if (popup) {
+                        popup.classList.remove("hidden");
+                    }
+                });
+            });
+
+            // Close popup with the 'X' button
+            closePopupButtons.forEach(button => {
+                button.addEventListener("click", function () {
+                    // Find the closest parent popup and hide it
+                    this.closest(".popup-overlay").classList.add("hidden");
+                });
+            });
+
+            // Close popup by clicking on the overlay background
+            popupOverlays.forEach(popup => {
+                popup.addEventListener("click", function (event) {
+                    // If the clicked element is the overlay itself (not its children)
+                    if (event.target === this) {
+                        this.classList.add("hidden");
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>

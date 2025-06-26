@@ -1,0 +1,97 @@
+﻿@* Thay đổi model thành BlogIndexViewModel *@
+@model DauAnNganNam.ViewModel.BlogIndexViewModel
+
+@{
+    ViewData["Title"] = "Tin Tức";
+
+    // Hàm trợ giúp để tạo tóm tắt nội dung
+    string CreateSummary(string htmlContent, int maxLength = 120)
+    {
+        if (string.IsNullOrEmpty(htmlContent))
+        {
+            return "Nội dung đang được cập nhật...";
+        }
+        var plainText = System.Text.RegularExpressions.Regex.Replace(htmlContent, "<.*?>", string.Empty);
+        plainText = System.Net.WebUtility.HtmlDecode(plainText);
+        return plainText.Length <= maxLength ? plainText : plainText.Substring(0, maxLength) + "...";
+    }
+}
+
+<!-- Page Header -->
+<section class="page-header" style="background-image: url(/assets/images/backgrounds/page-header-bg-1-1.jpg);">
+    <div class="container">
+        <h2>Tin Tức</h2>
+    </div>
+</section>
+
+<!-- Blog Grid Page Section -->
+<section class="blog-one blog-grid-page">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                @* Kiểm tra xem Model có bài viết nào không *@
+                @if (Model.Blogs != null && Model.Blogs.Any())
+                {
+                    <div class="row">
+                        @foreach (var blog in Model.Blogs)
+                        {
+                            <div class="col-md-6">
+                                <div class="blog-one__single">
+                                    <div class="blog-one__image">
+                                        @* Sửa lỗi: Lấy ImageUrl từ phần tử cuối cùng của danh sách Images. Dùng ảnh mặc định nếu danh sách rỗng. *@
+                                        <img src="@(blog.Images != null && blog.Images.Any() ? blog.Images.Last().ImageUrl : "https://placehold.co/570x400/eeeeee/333333?text=Tin+Tuc")" alt="@blog.Title">
+                                        <div class="blog-one__date">
+                                            <i class="far fa-calendar-alt"></i>
+                                            @if (blog.CreateDate != null) { ((DateOnly)(blog.CreateDate)).ToString("dd/MM/yyyy"); }
+                                        </div>
+                                    </div>
+                                    <div class="blog-one__content">
+                                        <ul class="blog-one__meta list-unstyled">
+                                            <li><a href="#">By Admin</a></li>
+                                            <li><a href="#">03 Comments</a></li>
+                                        </ul>
+                                        <h3><a asp-action="NewsDetails" asp-controller="Blogs" asp-route-id="@blog.NewsId">@blog.Title</a></h3>
+                                        <p>
+                                            @CreateSummary(blog.Content)
+                                        </p>
+                                        <a asp-action="NewsDetails" asp-controller="Blogs" asp-route-id="@blog.NewsId" class="blog-one__link">Learn More</a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                    <!-- Pagination Section -->
+                    <div class="text-center d-flex justify-content-center">
+                        <div class="post-pagination">
+                            @* Nút về trang trước *@
+                            @if (Model.HasPreviousPage)
+                            {
+                                <a asp-action="Index" asp-route-pageIndex="@(Model.PageIndex - 1)"><i class="fa fa-angle-left"></i></a>
+                            }
+
+                            @* Các nút số trang *@
+                            @for (int i = 1; i <= Model.TotalPages; i++)
+                            {
+                                <a asp-action="Index" asp-route-pageIndex="@i" class="@(i == Model.PageIndex ? "active" : "")">@i</a>
+                            }
+
+                            @* Nút tới trang kế tiếp *@
+                            @if (Model.HasNextPage)
+                            {
+                                <a asp-action="Index" asp-route-pageIndex="@(Model.PageIndex + 1)"><i class="fa fa-angle-right"></i></a>
+                            }
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    @* Hiển thị thông báo khi không có bài viết nào *@
+                    <div class="col-12 text-center">
+                        <h3>Chưa có tin tức gì.</h3>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>

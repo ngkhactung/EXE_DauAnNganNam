@@ -15,10 +15,6 @@ namespace DauAnNganNam.Controllers
 
 		public IActionResult Index()
         {
-            var queryProduct = _context.Products.Include(x => x.Images).Include(x => x.ProductCategory).ToList();
-            var queryCategory = _context.ProductCategories.ToList();
-			ViewBag.Categories = queryCategory;
-			ViewBag.Products = queryProduct;
 			return View();
         }
 
