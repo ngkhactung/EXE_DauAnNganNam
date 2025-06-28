@@ -19,7 +19,6 @@
     <!-- Fonts URL -->
     <link href="https://fonts.googleapis.com/css?family=Karla:400,700%7CPlayfair+Display:400,500,600,700,800,900%7CWork+Sans:300,400,500,600,700,800,900&amp;display=swap" rel="stylesheet">
 
-
     <!-- Plugins CSS -->
     <link rel="stylesheet" href="~/css/bootstrap.min.css">
     <link rel="stylesheet" href="~/css/bootstrap-datepicker.min.css">
@@ -37,6 +36,12 @@
     <link rel="stylesheet" href="~/css/style.css">
     <link rel="stylesheet" href="~/css/responsive.css">
     <link rel="stylesheet" href="~/css/chatbot.css" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
     <style>
         .bg{
             background:#a9312e
@@ -47,14 +52,49 @@
         .text-red{
             color: #a9312e
         }
+
+        body {
+            font-family: 'Be Vietnam Pro', sans-serif;
+        }
+
+        .sticky-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000; /* Đảm bảo nav luôn nằm trên cùng */
+            animation: slideDown 0.35s ease-out;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .nav-active {
+            background-color: #fff8ed !important;
+            color: #a9312e !important;
+        }
+
+        .desktop-menu .nav-active,
+        .mobile-menu .nav-active {
+            border-radius: 6px;
+        }
+
+        .desktop-menu .nav-active {
+            padding: 6px 12px;
+        }
+
+        .nav-link:hover {
+            color: #a9312e !important;
+        }
     </style>
+
+    @RenderSection("HeaderOption", required: false)
 </head>
 
 <body>
     <!-- Header -->
     <header class="text-white">
-        <div class="container mx-auto px-4 py-2 flex justify-between items-center bg" >
-            <div class="flex items-center space-x-4">
+        <div class="container mx-auto px-4 py-2 flex justify-between items-center bg">
+            <!-- Cột bên trái: Thông tin liên hệ -->
+            <div class="flex flex-col md:flex-row md:space-x-4 space-y-1 md:space-y-0 items-start md:items-center">
                 <div class="flex items-center">
                     <i class="ri-phone-line mr-2"></i>
                     <span>+84 325 974083</span>
@@ -64,7 +104,8 @@
                     <span>dauanngannam99@gmail.com</span>
                 </div>
             </div>
-            <div class="flex items-center space-x-4">
+            <!-- Cột bên phải: Mạng xã hội -->
+            <div class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-4">
                 <a href="#" class="text-white hover:text-gray-200">
                     <i class="ri-instagram-line"></i>
                 </a>
@@ -74,51 +115,78 @@
             </div>
         </div>
     </header>
+
+
     <!-- Navigation -->
-    <nav class="bg-white shadow-sm py-4">
-        <div class="container mx-auto px-4 flex justify-between items-center">
-            <div class="w-16 h-16 bg-c flex items-center justify-center">
+    <nav id="main-nav" class="bg-white shadow-sm transition-all duration-300">
+        <div class="container mx-auto px-4 flex justify-between items-center py-4">
+            <div class=" bg-c flex items-center justify-center">
                 <a href="/" aria-label="Trang chủ Dấu Ấn Ngàn Năm">
                     <img src="~/images/logoDauAnNganNam.png"
                          alt="Logo Dấu Ấn Ngàn Năm"
-                         class="w-16 h-16 object-contain" />
+                         style="height: 80px; width: 150px;" />
                 </a>
             </div>
-            <div class="hidden md:flex space-x-8">
-                <a href="/Home" class="text-gray-800 hover:text-primary font-medium">Trang chủ</a>
-                <a href="/Ais" class="text-gray-800 hover:text-primary font-medium">Trợ lý ảo</a>
-                <a href="/Product" class="text-gray-800 hover:text-primary font-medium">Bộ sưu tập</a>
-                <a href="/Blogs" class="text-gray-800 hover:text-primary font-medium">Tin Tức</a>
-                <a href="/Contact" class="text-gray-800 hover:text-primary font-medium">Giới thiệu</a>
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex space-x-8 desktop-menu">
+                <a href="/Home" class="nav-link text-gray-800 hover:text-red font-medium">Trang chủ</a>
+                <a href="/Ais" class="nav-link text-gray-800 hover:text-red font-medium">Trợ lý ảo</a>
+                <a href="/Product" class="nav-link text-gray-800 hover:text-red font-medium">Bộ sưu tập</a>
+                <a href="/Blogs" class="nav-link text-gray-800 hover:text-red font-medium">Tin Tức</a>
+                <a href="/Contact" class="nav-link text-gray-800 hover:text-red font-medium">Giới thiệu</a>
             </div>
-            <button class=" text-white px-6 py-2 rounded-button whitespace-nowrap hover:bg-opacity-90 transition bg">
-                Đăng nhập
-            </button>
+            <div class="hidden md:block">
+                <button class="bg text-white px-6 py-2 rounded-button whitespace-nowrap hover:bg-opacity-90 transition">
+                    Đăng nhập
+                </button>
+            </div>
+
+            <!-- Mobile Menu Button (Hamburger) -->
+            <div class="md:hidden flex items-center">
+                <button id="mobile-menu-button" class="text-gray-800 hover:text-red focus:outline-none">
+                    <i class="ri-menu-line text-4xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-200 mobile-menu">
+            <a href="/Home" class="nav-link block py-3 px-4 text-gray-800 hover:bg-gray-100 font-medium">Trang chủ</a>
+            <a href="/Ais" class="nav-link block py-3 px-4 text-gray-800 hover:bg-gray-100 font-medium">Trợ lý ảo</a>
+            <a href="/Product" class="nav-link block py-3 px-4 text-gray-800 hover:bg-gray-100 font-medium">Bộ sưu tập</a>
+            <a href="/Blogs" class="nav-link block py-3 px-4 text-gray-800 hover:bg-gray-100 font-medium">Tin Tức</a>
+            <a href="/Contact" class="nav-link block py-3 px-4 text-gray-800 hover:bg-gray-100 font-medium">Giới thiệu</a>
+            <div class="px-4 py-4">
+                <button class="w-full bg text-white px-6 py-2 rounded-button whitespace-nowrap hover:bg-opacity-90 transition">
+                    Đăng nhập
+                </button>
+            </div>
         </div>
     </nav>
-        <!-- Render Body Start-->
-        @RenderBody()
-        
-        <!-- Render Body End-->
+
+    <!-- Render Body Start-->
+    @RenderBody()
+
+    <!-- Render Body End-->
     <!-- Footer -->
     <footer class="bg-gray-100 py-12">
-        <div class="container mx-auto px-4">
+        <div class="container mx-auto px-5">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <!-- Column 1 -->
                 <div>
                     <h3 class="text-lg font-bold text-gray-900 mb-4">Thông Tin</h3>
                     <ul class="space-y-2">
                         <li>
-                            <a href="#" class="text-gray-700 hover:text-red">Về Chúng Tôi</a>
+                            <a href="/Contact" class="text-gray-700 hover:text-red">Về Chúng Tôi</a>
                         </li>
                         <li>
-                            <a href="#" class="text-gray-700 hover:text-red">Dự Án Ngàn Năm</a>
+                            <a href="/Home" class="text-gray-700 hover:text-red">Dự Án Ngàn Năm</a>
                         </li>
                         <li>
-                            <a href="#" class="text-gray-700 hover:text-red">Bộ Sưu Tập</a>
+                            <a href="/Product" class="text-gray-700 hover:text-red">Bộ Sưu Tập</a>
                         </li>
                         <li>
-                            <a href="#" class="text-gray-700 hover:text-red">Tin Tức & Sự Kiện</a>
+                            <a href="/Blogs" class="text-gray-700 hover:text-red">Tin Tức & Sự Kiện</a>
                         </li>
                     </ul>
                 </div>
@@ -148,8 +216,16 @@
                     </ul>
                 </div>
                 <!-- Column 4 -->
-                <!--
                 <div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-4">
+                        Lời Xin chào
+                    </h3>
+                    <p class="text-gray-700 mb-4">
+                        Chào mừng bạn đến với dự án Dấu Ấn Ngàn Năm. Nơi lưu giữ những câu chuyện lịch sử và dấu ấn văn hóa Việt Nam qua các thời kỳ.
+                    </p>
+                </div>
+                <!-- Column 4 -->
+                @* <div>
                     <h3 class="text-lg font-bold text-gray-900 mb-4">
                         Đăng Ký Nhận Tin
                     </h3>
@@ -164,8 +240,7 @@
                             Đăng ký
                         </button>
                     </div>
-                </div>
-                -->
+                </div> *@
             </div>
             <div class="mt-12 pt-8 border-t border-gray-200">
                 <div class="flex flex-col md:flex-row justify-between items-center">
@@ -220,6 +295,104 @@
     <!-- Custom Scripts -->
     <script src="~/js/theme.js"></script>
     <script src="~/js/chatbot.js"></script>
+
+    <script>
+        // Đợi cho đến khi toàn bộ nội dung trang được tải
+        document.addEventListener('DOMContentLoaded', function () {
+
+            // --- Xử lý Mobile Menu ---
+            const menuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuIcon = menuButton.querySelector('i'); // Lấy thẻ icon bên trong button
+
+            if (menuButton && mobileMenu) {
+                menuButton.addEventListener('click', function () {
+                    mobileMenu.classList.toggle('hidden');
+
+                    // Thay đổi icon từ menu sang 'X' và ngược lại
+                    if (mobileMenu.classList.contains('hidden')) {
+                        menuIcon.classList.remove('ri-close-line');
+                        menuIcon.classList.add('ri-menu-line');
+                    } else {
+                        menuIcon.classList.remove('ri-menu-line');
+                        menuIcon.classList.add('ri-close-line');
+                    }
+                });
+            }
+
+            // --- Xử lý Sticky Navigation ---
+            const nav = document.getElementById('main-nav');
+            if (nav) {
+                // Lấy vị trí ban đầu của thanh nav so với đầu trang
+                const navTop = nav.offsetTop;
+
+                window.addEventListener('scroll', function () {
+                    // Nếu vị trí cuộn của cửa sổ lớn hơn vị trí ban đầu của nav
+                    if (window.scrollY > navTop) {
+                        // Thêm class để nav "dính" lại
+                        nav.classList.add('sticky-nav');
+                    } else {
+                        // Xóa class để nav trở lại bình thường
+                        nav.classList.remove('sticky-nav');
+                    }
+                });
+            }
+
+            // --- Xử lý Active Navigation ---
+            const navLinks = document.querySelectorAll('.nav-link');
+            let currentPath = window.location.pathname.toLowerCase();
+
+            // Nếu là trang chủ (đường dẫn chỉ là "/"), thì coi nó là "/home" để khớp với link
+            if (currentPath === '/') {
+                currentPath = '/home';
+            }
+
+            navLinks.forEach(link => {
+                const linkPath = link.getAttribute('href').toLowerCase();
+
+                // So sánh xem đường dẫn hiện tại có bắt đầu bằng đường dẫn của link không
+                if (linkPath !== '/' && currentPath.startsWith(linkPath)) {
+                    link.classList.add('nav-active');
+                }
+            });
+
+            // --- Xử lý Slider Product ---
+            const bookCarouselElement = document.querySelector('.products-carousel');
+            if (bookCarouselElement) {
+                // Khởi tạo slider với jQuery
+                const owl = $(".products-carousel");
+                owl.owlCarousel({
+                    loop: true,
+                    margin: 20,
+                    dots: true,
+                    nav: false, 
+                    autoplay: true,                      // Bật tự động chạy
+                    autoplayTimeout: 4000,               // Chuyển slide sau mỗi 5 giây
+                    responsive: {
+                        0: { items: 1 },
+                        768: { items: 2 },
+                        1024: { items: 3 }
+                    }
+                });
+
+                // Lắng nghe sự kiện click trên các nút tùy chỉnh của chúng ta
+                const prevButton = document.getElementById('products-carousel-prev');
+                const nextButton = document.getElementById('products-carousel-next');
+
+                if (prevButton) {
+                    prevButton.addEventListener('click', function() {
+                        owl.trigger('prev.owl.carousel');
+                    });
+                }
+
+                if (nextButton) {
+                    nextButton.addEventListener('click', function() {
+                        owl.trigger('next.owl.carousel');
+                    });
+                }
+            }
+        });
+    </script>
 </body>
 
 

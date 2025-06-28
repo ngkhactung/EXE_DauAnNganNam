@@ -1,19 +1,13 @@
-﻿<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Blog Lịch Sử</title>
-    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+﻿@{
+    ViewData["Title"] = "Blog Lịch Sử";
+}    
+
+@section HeaderOption{
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
           rel="stylesheet" />
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" />
     <style>
-        body {
-            font-family: 'Roboto', sans-serif;
+        .body-content {
+            font-family: 'Be Vietnam Pro', sans-serif;
         }
 
         .burgundy {
@@ -56,8 +50,9 @@
             },
         };
     </script>
-</head>
-<body class="min-h-screen">
+} 
+
+<div class="blog-content">
 
     <section class="py-10">
         <div class="container mx-auto px-4">
@@ -279,5 +274,4 @@
         });
     </script>
 
-</body>
-</html>
+</div>
