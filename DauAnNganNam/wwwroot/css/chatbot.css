@@ -28,14 +28,14 @@
     position: fixed;
     bottom: 20px;
     right: 20px;
-    width: 300px;
+    width: 330px;
     font-family: Arial, sans-serif;
     z-index: 9999;
     box-shadow: 0 0 10px rgba(0,0,0,0.2);
 }
 
 #chat-header {
-    background: #d18550;
+    background: #a9312e;
     color: white;
     padding: 10px;
     border-radius: 10px 10px 0 0;
@@ -80,7 +80,7 @@
 }
 
 .user {
-    background-color: #d18550;
+    background-color: #a9312e;
     color: white;
     float: right;
 }
