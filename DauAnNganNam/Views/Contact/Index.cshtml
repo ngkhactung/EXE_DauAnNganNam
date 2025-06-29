@@ -15,7 +15,7 @@
             top: 0;
             bottom: 0;
             width: 2px;
-            background-color: #A41E34;
+            background-color: #000000;
             /* On mobile, it's positioned to the left */
             left: 20px;
             z-index: 1;
@@ -37,22 +37,35 @@
         /* Your original styles - preserved for correctness */
         .timeline-date {
             color: #A41E34;
-            font-weight: bold;
-            font-size: 1.125rem; /* 18px */
+            font-weight: 700;
+            font-size: 1.9rem;
+            font-family: "Playfair Display", serif;
         }
 
+            .timeline-date::before {
+                content: '';
+                display: inline-block;
+                width: 4.5rem; /* Độ rộng của gạch ngang */
+                height: 0.25rem; /* Độ dày của gạch ngang */
+                background-color: #A41E34; /* Màu giống ngày tháng */
+                vertical-align: baseline; /* Căn giữa theo chiều dọc với văn bản */
+                margin-right: 1rem; /* Khoảng cách giữa gạch ngang và ngày tháng */
+            }
+
         .timeline-content {
-            background-color: #FAF9F6;
+            /* background-color: #FAF9F6; */
             border-radius: 8px;
             padding: 20px;
-            width: 100%; /* Full width within its parent column */
+            width: 100%;
+            color: #000000;
         }
 
         .timeline-title {
-            color: #A41E34;
+            color: #000000;
             font-weight: bold;
-            font-size: 1.25rem; /* 20px */
-            margin-bottom: 10px;
+            font-size: 1.75rem; 
+            margin-bottom: 20px;
+            text-align:center;
         }
 
         /* Mobile layout adjustments */
@@ -106,7 +119,7 @@
             </div>
             <h3 class="text-2xl font-bold text-red mb-6">Dấu ấn ngàn năm</h3>
             <div class="text-gray-700 space-y-4">
-                <p>Thời hiện văn lịch sử - để chuyển vừa sống lại giữa đời nay.</p>
+                <p>Thổi hồn vào lịch sử – để chuyện xưa sống lại giữa đời nay.</p>
                 <p>Không chỉ để đọc, mà để được bước vào. Không chỉ để nhớ, mà để cảm - hiểu - tự hào.</p>
                 <p>Dấu Ấn Ngàn Năm ra đời với khát vọng biến lịch sử thành trải nghiệm - nơi người trẻ có thể chạm vào quá khứ, nghe vua kể chuyện, thấy rồng bay qua trời Thăng Long, và đứng giữa Hoàng thành khi lịch sử đang đổi thay.</p>
                 <p>Chúng tôi tin rằng:</p>
@@ -131,8 +144,8 @@
 
     <!-- --- START OF FINAL CORRECTED TIMELINE SECTION --- -->
     <section class="mb-12">
-        <h2 class="text-3xl font-bold text-center mb-2" style="color:black">Dòng thời gian</h2>
-        <h3 class="text-2xl font-bold text-red text-center mb-12">Lịch sử phát triển</h3>
+        <h2 class="text-2xl font-bold text-center mb-2" style="color:black">Dòng thời gian</h2>
+        <h3 class="text-3xl font-bold text-red text-center mb-12">Lịch sử phát triển</h3>
         <div class="timeline-wrapper">
             <div class="timeline-line"></div>
             <div class="space-y-16">
@@ -145,8 +158,8 @@
                         <p class="timeline-date mb-2 lg:text-right">01/2025</p>
                         <div class="timeline-content">
                             <h4 class="timeline-title">Ý niệm đầu tiên</h4>
-                            <p class="mb-2">"Lịch sử không nằm trong sách và... mà được chạm được chạm"</p>
-                            <p>Từ niềm trăn trở, nhóm sáng lập nảy đầu niềm mong muốn về một dự án lịch nghiệm và vui.</p>
+                            <p class="mb-2">"Làm sao để lịch sử không chỉ học trong sách vở… mà được chạm, được sống?"</p>
+                            <p>Từ trăn trở ấy, nhóm sáng lập bắt đầu nhen nhóm ý tưởng về một dự án trải nghiệm sử Việt</p>
                         </div>
                     </div>
                     <!-- Center Spacer (Just for spacing on desktop) -->
@@ -166,8 +179,8 @@
                         <p class="timeline-date mb-2">02/2025</p>
                         <div class="timeline-content">
                             <h4 class="timeline-title">Ý tưởng sơ khai</h4>
-                            <p class="mb-2">Bắt đầu kiện toàn tổ chức với nhiều nhân sự tiềm năng được bổ sung.</p>
-                            <p>Lý Thái Tổ - Trần Nhân Tông - Lê Lợi - Vua Lê Chân Tông</p>
+                            <p class="mb-2">Bốn sự kiện lịch sử ứng với bốn nhân vật tiêu biểu được lựa chọn:</p>
+                            <p>Lý Thái Tổ – Trần Nhân Tông – Lê Lợi – Vua Lê Chúa Trịnh.</p>
                         </div>
                     </div>
                     <!-- Center Spacer -->
@@ -187,8 +200,8 @@
                         <p class="timeline-date mb-2 lg:text-right">05/2025</p>
                         <div class="timeline-content">
                             <h4 class="timeline-title">Khởi động dự án "Dấu Ấn Ngàn Năm"</h4>
-                            <p class="mb-2">Slogan: "Lịch sử không ngủ nó vẫn đập trong từng thời khắc" được ra đời.</p>
-                            <p>Bắt đầu thiết kế mô hình website, thử nghiệm và gây dựng đội ngũ kể chuyện ban đầu.</p>
+                            <p class="mb-2">Slogan “Lịch sử không ngủ nó vẫn đập trong từng thế hệ” được lựa chọn.</p>
+                            <p> Bắt đầu thiết kế mô hình, website, bao bì, thẻ nhân vật, giấy hướng dẫn sử dụng và kịch bản kể chuyện.</p>
                         </div>
                     </div>
                     <!-- Center Spacer -->
@@ -208,8 +221,15 @@
                         <p class="timeline-date mb-2">06/2025</p>
                         <div class="timeline-content">
                             <h4 class="timeline-title">Kể những câu chuyện đầu tiên</h4>
-                            <p class="mb-2">Không chỉ là con chữ - làm sự thực, để niềm tin trở thành hiện thực - câu chuyện được kể.</p>
-                            <p>Chúng tôi đang tiếp tục kể những câu chuyện.</p>
+                                <p class="mb-2">
+                                    Không còn là con chữ – lịch sử bước lên nền tảng số. Và lịch sử có thể chạm - cảm - thấu hiểu.
+                                    Chúng tôi tạo mô hình để mọi người có thể “chạm” và lịch sử.
+                                </p>
+                                <p>
+                                    Chúng tôi dựng blog kể chuyện.<br />
+                                    Chúng tôi tích hợp mô hình 3D, hoạt họa, không gian xoay, thu phóng.<br />
+                                    Để người xem không chỉ đọc – mà  trải nghiệm lịch sử.
+                                </p>
                         </div>
                     </div>
                     <!-- Center Spacer -->

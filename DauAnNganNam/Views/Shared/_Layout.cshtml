@@ -57,6 +57,14 @@
             font-family: 'Be Vietnam Pro', sans-serif;
         }
 
+        .bg-footer{
+            background-image: url("/images/backgrounds/bg_footer.jpg");
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            padding:7rem 0 6rem 0;
+        }
+
         .sticky-nav {
             position: fixed;
             top: 0;
@@ -81,7 +89,17 @@
             padding: 6px 12px;
         }
 
+        .nav-link {
+            transition: color 0.3s ease, font-size 0.1s ease, font-weight 0.1s ease;
+        }
+
         .nav-link:hover {
+            color: #a9312e !important;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .footer-link:hover{
             color: #a9312e !important;
         }
     </style>
@@ -129,11 +147,11 @@
             </div>
             <!-- Desktop Menu -->
             <div class="hidden md:flex space-x-8 desktop-menu">
-                <a href="/Home" class="nav-link text-gray-800 hover:text-red font-medium">Trang chủ</a>
-                <a href="/Ais" class="nav-link text-gray-800 hover:text-red font-medium">Trợ lý ảo</a>
-                <a href="/Product" class="nav-link text-gray-800 hover:text-red font-medium">Bộ sưu tập</a>
-                <a href="/Blogs" class="nav-link text-gray-800 hover:text-red font-medium">Tin Tức</a>
-                <a href="/Contact" class="nav-link text-gray-800 hover:text-red font-medium">Giới thiệu</a>
+                <a href="/Home" class="nav-link text-gray-800 font-medium">Trang chủ</a>
+                <a href="/Ais" class="nav-link text-gray-800 font-medium">Trợ lý ảo</a>
+                <a href="/Product" class="nav-link text-gray-800 font-medium">Bộ sưu tập</a>
+                <a href="/Blogs" class="nav-link text-gray-800 font-medium">Tin Tức</a>
+                <a href="/Contact" class="nav-link text-gray-800 font-medium">Giới thiệu</a>
             </div>
             <div class="hidden md:block">
                 <button class="bg text-white px-6 py-2 rounded-button whitespace-nowrap hover:bg-opacity-90 transition">
@@ -169,24 +187,24 @@
 
     <!-- Render Body End-->
     <!-- Footer -->
-    <footer class="bg-gray-100 py-12">
-        <div class="container mx-auto px-5">
+    <footer class="bg-gray-100">
+        <div class="bg-footer container mx-auto px-5">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <!-- Column 1 -->
                 <div>
                     <h3 class="text-lg font-bold text-gray-900 mb-4">Thông Tin</h3>
                     <ul class="space-y-2">
                         <li>
-                            <a href="/Contact" class="text-gray-700 hover:text-red">Về Chúng Tôi</a>
+                            <a href="/Contact" class="text-gray-700 footer-link">Về Chúng Tôi</a>
                         </li>
                         <li>
-                            <a href="/Home" class="text-gray-700 hover:text-red">Dự Án Ngàn Năm</a>
+                            <a href="/Home" class="text-gray-700 footer-link">Dự Án Ngàn Năm</a>
                         </li>
                         <li>
-                            <a href="/Product" class="text-gray-700 hover:text-red">Bộ Sưu Tập</a>
+                            <a href="/Product" class="text-gray-700 footer-link">Bộ Sưu Tập</a>
                         </li>
                         <li>
-                            <a href="/Blogs" class="text-gray-700 hover:text-red">Tin Tức & Sự Kiện</a>
+                            <a href="/Blogs" class="text-gray-700 footer-link">Tin Tức & Sự Kiện</a>
                         </li>
                     </ul>
                 </div>
@@ -242,22 +260,22 @@
                     </div>
                 </div> *@
             </div>
-            <div class="mt-12 pt-8 border-t border-gray-200">
-                <div class="flex flex-col md:flex-row justify-between items-center">
-                    <p class="text-gray-700 mb-4 md:mb-0">
-                        © 2025 Dấu Ấn Ngàn Năm. Đã đăng ký bản quyền.
-                    </p>
-                    <div class="flex space-x-4">
-                        <a href="#" class="text-gray-700 hover:text-red">
-                            <i class="ri-facebook-fill"></i>
-                        </a>
-                        <a href="#" class="text-gray-700 hover:text-red">
-                            <i class="ri-instagram-line"></i>
-                        </a>
-                        <a href="#" class="text-gray-700 hover:text-red">
-                            <i class="ri-youtube-fill"></i>
-                        </a>
-                    </div>
+        </div>
+        <div class="px-5 pt-8 border-t border-gray-200">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-700 mb-4 md:mb-0">
+                    © 2025 Dấu Ấn Ngàn Năm. Đã đăng ký bản quyền.
+                </p>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-gray-700 hover:text-red">
+                        <i class="ri-facebook-fill"></i>
+                    </a>
+                    <a href="#" class="text-gray-700 hover:text-red">
+                        <i class="ri-instagram-line"></i>
+                    </a>
+                    <a href="#" class="text-gray-700 hover:text-red">
+                        <i class="ri-youtube-fill"></i>
+                    </a>
                 </div>
             </div>
         </div>
