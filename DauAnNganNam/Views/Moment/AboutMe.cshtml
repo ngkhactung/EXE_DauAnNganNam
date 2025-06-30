@@ -64,6 +64,10 @@
 			font-weight: bold;
 			margin-bottom: 10px;
 		}
+
+		.text-primary-red {
+			color: #A41E34;
+		}
 	</style>
 	<script>tailwind.config={theme:{extend:{colors:{primary:'#A41E34',secondary:'#FAF9F6'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
 </head>
@@ -76,7 +80,7 @@
 		}
 	</style>
 	<!-- Hero Section with Image -->
-	<div class="bg-gradient-to-r from-primary/10 to-transparent">
+	@* <div class="bg-gradient-to-r from-primary/10 to-transparent">
 		<div class="container mx-auto px-4 py-16 flex items-center justify-between">
 			<div class="max-w-2xl">
 				<h1 class="text-5xl font-bold text-gray-900 mb-6">Dấu Ấn Ngàn Năm</h1>
@@ -87,42 +91,49 @@
 				<img src="https://readdy.ai/api/search-image?query=3D%20visualization%20of%20ancient%20Vietnamese%20architecture%20and%20culture%2C%20digital%20art%20style%2C%20minimalist%2C%20clean%20design%2C%20soft%20lighting%2C%20muted%20colors&width=600&height=400&seq=hero1&orientation=landscape" alt="Hero Image" class="rounded-lg shadow-xl object-cover">
 			</div>
 		</div>
-	</div>
+	</div> *@
 	<!-- Main Content -->
 	<main class="container mx-auto px-4 py-8">
-		<h1 class="text-3xl font-bold text-center text-primary mb-12">Về chúng tôi</h1>
+		<h1 class="text-3xl font-bold text-center text-primary-red mb-12">Về chúng tôi</h1>
 		<section class="mb-12">
-			<div class="flex items-center mb-6">
-				<div class="w-12 h-1 bg-primary"></div>
-				<h2 class="text-2xl font-bold ml-4 text-gray-800">Sứ mệnh</h2>
-			</div>
-			<h3 class="text-2xl font-bold text-primary mb-6">Dấu ấn ngàn năm</h3>
-			<div class="text-gray-700 space-y-4">
-				<p>Thời hiện văn lịch sử - để chuyển vừa sống lại giữa đời nay.</p>
-				<p>Không chỉ để đọc, mà để được bước vào. Không chỉ để nhớ, mà để cảm - hiểu - tự hào.</p>
-				<p>Dấu Ấn Ngàn Năm ra đời với khát vọng biến lịch sử thành trải nghiệm - nơi người trẻ có thể chạm vào quá khứ, nghe vua kể chuyện, thấy rồng bay qua trời Thăng Long, và đứng giữa Hoàng thành khi lịch sử đang đổi thay.</p>
-				<p>Chúng tôi tin rằng:</p>
-				<p class="italic">Lịch sử không ngủ trong sách. Lịch sử sống trong trái tim - nếu được đánh thức đúng cách.</p>
-				<p>Bằng mô hình nhân vật truyện kể 3D thị, hoạt họa, 3D - AR và không gian trung bay tương tác, dự án hướng đến:</p>
-				<div class="pl-6 space-y-3 mt-4">
-					<div class="flex items-start">
-						<div class="text-yellow-500 mr-2 mt-1">🔸</div>
-						<p>Giải phóng lịch sử khỏi những con chữ khô khan - và biến nó thành hành trình cộng đồng chạm đến cảm xúc.</p>
+			<div class="flex flex-col md:flex-row items-center md:items-start md:space-x-8">
+				<div class="md:w-1/2 mb-8 md:mb-0">
+					<div class="flex items-center mb-6">
+						<div class="w-12 h-1 bg-primary-red" style="background-color: #A41E34;"></div> <h2 class="text-2xl font-bold ml-4 text-gray-800 text-primary-red">Sứ mệnh</h2>
 					</div>
-					<div class="flex items-start">
-						<div class="text-yellow-500 mr-2 mt-1">🔸</div>
-						<p>Biến những biểu tượng ngàn năm thành "cánh cổng xuyên sử" - nơi ký ức giao hiện tại, nơi người trẻ kết nối với tổ tiên bằng ngôn ngữ của thời đại họ.</p>
+					<h3 class="text-2xl font-bold text-primary-red mb-6">Dấu ấn ngàn năm</h3>
+					<div class="text-gray-700 space-y-4">
+						<p>Thời hiện văn lịch sử - để chuyển vừa sống lại giữa đời nay.</p>
+						<p>Không chỉ để đọc, mà để được bước vào. Không chỉ để bước vào. Không chỉ để nhớ, mà để cảm - hiểu - tự hào.</p>
+						<p>Dấu Ấn Ngàn Năm ra đời với khát vọng biến lịch sử thành trải nghiệm - nơi người trẻ có thể chạm vào quá khứ, nghe vua kể chuyện, thấy rồng bay qua trời Thăng Long, và đứng giữa Hoàng thành khi lịch sử đang đổi thay.</p>
+						<p>Chúng tôi tin rằng:</p>
+						<p class="italic">Lịch sử không ngủ trong sách. Lịch sử sống trong trái tim - nếu được đánh thức đúng cách.</p>
+						<p>Bằng mô hình nhân vật truyện kể 3D thị, hoạt họa, 3D - AR và không gian trung bay tương tác, dự án hướng đến:</p>
+						<div class="pl-6 space-y-3 mt-4">
+							<div class="flex items-start">
+								<div class="text-yellow-500 mr-2 mt-1">🔸</div>
+								<p>Giải phóng lịch sử khỏi những con chữ khô khan - và biến nó thành hành trình cộng đồng chạm đến cảm xúc.</p>
+							</div>
+							<div class="flex items-start">
+								<div class="text-yellow-500 mr-2 mt-1">🔸</div>
+								<p>Biến những biểu tượng ngàn năm thành "cánh cổng xuyên sử" - nơi ký ức giao hiện tại, nơi người trẻ kết nối với tổ tiên bằng ngôn ngữ của thời đại họ.</p>
+							</div>
+							<div class="flex items-start">
+								<div class="text-yellow-500 mr-2 mt-1">🔸</div>
+								<p>Tạo ra công đồng yêu sử, sống cùng sử, và kể lại lịch sử theo cách mới mẻ - sáng tạo - đáng nhớ.</p>
+							</div>
+						</div>
 					</div>
-					<div class="flex items-start">
-						<div class="text-yellow-500 mr-2 mt-1">🔸</div>
-						<p>Tạo ra công đồng yêu sử, sống cùng sử, và kể lại lịch sử theo cách mới mẻ - sáng tạo - đáng nhớ.</p>
-					</div>
+				</div>
+
+				<div class="md:w-1/2 flex justify-center items-center">
+					<img src="~/images/logoDauAnNganNam.png" alt="Logo" class="rounded-lg shadow-lg max-w-full h-auto">
 				</div>
 			</div>
 		</section>
 		<section class="mb-12">
 			<h2 class="text-3xl font-bold text-center mb-8">Dòng thời gian</h2>
-			<h3 class="text-2xl font-bold text-primary text-center mb-12">Lịch sử phát triển</h3>
+			<h3 class="text-2xl font-bold text-primary-red text-center mb-12">Lịch sử phát triển</h3>
 			<div class="relative">
 				<div class="timeline-line"></div>
 				<!-- Timeline Item 1 -->
@@ -186,7 +197,7 @@
 		<div class="container mx-auto px-4">
 			<div class="grid grid-cols-1 md:grid-cols-4 gap-8">
 				<div>
-					<h4 class="text-lg font-bold mb-4">Về chúng tôi</h4>
+					<h4 class="text-lg font-bold mb-4 ">Về chúng tôi</h4>
 					<p class="text-gray-600 mb-4">Dấu Ấn Ngàn Năm - Nơi lịch sử trở nên sống động và gần gũi với mọi người.</p>
 					<div class="flex space-x-4">
 						<a href="#" class="text-gray-600 hover:text-primary">
