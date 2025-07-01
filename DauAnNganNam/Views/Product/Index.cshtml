@@ -97,6 +97,48 @@
         .bg-primary-btn {
             background-color: #963232;
         }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+            .popup.active {
+                display: block;
+                opacity: 1;
+            }
+
+        .popup-content {
+            background: white;
+            width: 80%;
+            max-width: 500px;
+            margin: 100px auto;
+            padding: 20px;
+            border-radius: 8px;
+            position: relative;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .popup.active .popup-content {
+            transform: translateY(0);
+        }
+
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body class="bg-white">
@@ -131,7 +173,8 @@
                     <p class="mb-6 italic text-gray-600">
                         Muốn rõ tận căn cơ cuộc dời đô nghìn năm ấy, hãy theo trẫm, đọc tiếp câu chuyện...
                     </p>
-                    <button class="bg-primary-btn text-white px-8 py-3 rounded-button hover:bg-opacity-90 transition pulse whitespace-nowrap">
+                    <button class="open-popup bg-primary-btn text-white px-8 py-3 rounded-button hover:bg-opacity-90 transition pulse whitespace-nowrap"
+                            data-popup="popup1">
                         Khám Phá Ngay
                     </button>
                 </div>
@@ -162,7 +205,8 @@
                     <p class="mb-6 italic text-gray-600">
                         Muốn rõ tâm thế của một minh quân – hãy theo trẫm, đọc tiếp câu chuyện…
                     </p>
-                    <button class="bg-primary-btn text-white px-8 py-3 rounded-button hover:bg-opacity-90 transition pulse whitespace-nowrap">
+                    <button class="open-popup bg-primary-btn text-white px-8 py-3 rounded-button hover:bg-opacity-90 transition pulse whitespace-nowrap"
+                            data-popup="popup2">
                         Khám Phá Ngay
                     </button>
                 </div>
@@ -193,7 +237,8 @@
                     <p class="mb-6 italic text-gray-600">
                         Muốn biết khởi nguyên của triều Hậu Lê – hãy theo trẫm, đọc tiếp câu chuyện...
                     </p>
-                    <button class="bg-primary-btn text-white px-8 py-3 rounded-button hover:bg-opacity-90 transition pulse whitespace-nowrap">
+                    <button class="open-popup bg-primary-btn text-white px-8 py-3 rounded-button hover:bg-opacity-90 transition pulse whitespace-nowrap"
+                            data-popup="popup3">
                         Khám Phá Ngay
                     </button>
                 </div>
@@ -224,13 +269,48 @@
                     <p class="mb-6 italic text-gray-600">
                         Muốn rõ chuyện đồng cung dị mộng, theo trẫm, đọc tiếp...
                     </p>
-                    <button class="bg-primary-btn text-white px-8 py-3 rounded-button hover:bg-opacity-90 transition pulse whitespace-nowrap">
+                    <button class="open-popup bg-primary-btn text-white px-8 py-3 rounded-button hover:bg-opacity-90 transition pulse whitespace-nowrap"
+                            data-popup="popup4">
                         Khám Phá Ngay
                     </button>
                 </div>
             </div>
         </div>
     </section>
+    <body>
+        <!-- Pop-up 1 -->
+        <div id="popup1" class="popup">
+            <div class="popup-content">
+                <span class="close">&times;</span>
+                <h2>Nội dung Pop-up 1</h2>
+            </div>
+        </div>
+
+        <!-- Pop-up 2 -->
+        <div id="popup2" class="popup">
+            <div class="popup-content">
+                <span class="close">&times;</span>
+                <h2>Nội dung Pop-up 2</h2>
+            </div>
+        </div>
+
+        <!-- Pop-up 3 -->
+        <div id="popup3" class="popup">
+            <div class="popup-content">
+                <span class="close">&times;</span>
+                <h2>Nội dung Pop-up 3</h2>
+            </div>
+        </div>
+
+        <!-- Pop-up 4 -->
+        <div id="popup4" class="popup">
+            <div class="popup-content">
+                <span class="close">&times;</span>
+                <h2>Nội dung Pop-up 4</h2>
+            </div>
+        </div>
+        <script src="script.js"></script> <!-- File JavaScript -->
+    </body>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -281,5 +361,28 @@
 
           sections.forEach(section => scrollObserver.observe(section));
         });
+                // Mở pop-up khi nhấp nút
+        document.querySelectorAll('.open-popup').forEach(button => {
+          button.addEventListener('click', function() {
+            const popupId = this.getAttribute('data-popup');
+            document.getElementById(popupId).classList.add('active');
+          });
+        });
+
+        // Đóng pop-up khi nhấp nút × hoặc bên ngoài
+        document.querySelectorAll('.popup').forEach(popup => {
+          // Đóng khi nhấp nút ×
+          popup.querySelector('.close').addEventListener('click', () => {
+            popup.classList.remove('active');
+          });
+
+          // Đóng khi nhấp bên ngoài
+          popup.addEventListener('click', (event) => {
+            if (event.target === popup) {
+              popup.classList.remove('active');
+            }
+          });
+        });
     </script>
+
 </body>
