@@ -2,10 +2,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Di Sản Việt Nam</title>
+    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" />
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
+        // Cấu hình Tailwind của bạn (giữ nguyên)
         tailwind.config = {
           theme: {
             extend: {
@@ -33,67 +37,6 @@
             font-family: 'Playfair Display', serif;
         }
 
-        .product-section {
-            min-height: 100vh;
-            scroll-margin-top: 80px;
-            display: flex;
-            align-items: center;
-        }
-
-        .fade-in {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
-        }
-
-            .fade-in.visible {
-                opacity: 1;
-                transform: translateY(0);
-            }
-
-        .dot-nav {
-            position: fixed;
-            right: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 100;
-        }
-
-        .dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background-color: #ddd;
-            margin: 10px 0;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-            .dot.active {
-                background-color: #963232;
-                transform: scale(1.3);
-            }
-
-            .dot:hover {
-                background-color: #963232;
-                transform: scale(1.2);
-            }
-
-        @@keyframes pulse {
-            0%, 100% {
-                transform: scale(1);
-            }
-
-            50% {
-                transform: scale(1.05);
-            }
-        }
-
-
-        .pulse {
-            animation: pulse 2s infinite;
-        }
-
         .bg-primary-btn {
             background-color: #963232;
         }
@@ -109,36 +52,128 @@
             z-index: 1000;
             opacity: 0;
             transition: opacity 0.3s ease-in-out;
+            justify-content: center;
+            align-items: center;
         }
 
             .popup.active {
-                display: block;
+                display: flex;
                 opacity: 1;
             }
 
         .popup-content {
             background: white;
-            width: 80%;
             max-width: 500px;
-            margin: 100px auto;
             padding: 20px;
             border-radius: 8px;
             position: relative;
-            transform: translateY(-20px);
-            transition: transform 0.3s ease-in-out;
+            transform: translateY(-20px) scale(0.95);
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            opacity: 0;
         }
 
         .popup.active .popup-content {
-            transform: translateY(0);
+            transform: translateY(0) scale(1);
+            opacity: 1;
         }
-
         .close {
             position: absolute;
             top: 10px;
             right: 15px;
             font-size: 24px;
             cursor: pointer;
+            z-index: 10;
         }
+
+        #thanglong-popup .popup-content {
+            background-color: #f8f5f0;
+            color: #5a3e1c;
+            font-family: 'Times New Roman', serif;
+            width: 90%;
+            max-width: 800px;
+            height: 90vh;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        #thanglong-popup .close-button {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: #5a3e1c;
+            color: #f8f5f0;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            font-size: 20px;
+        }
+
+        .scroll-container {
+            height: 100%;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+        }
+
+        .section {
+            padding: 2rem;
+            border-bottom: 1px solid #d9c9a3;
+        }
+
+            .section:last-child {
+                border-bottom: none;
+            }
+
+        .main-title {
+            font-weight: bold;
+            color: #5a3e1c;
+            text-shadow: 1px 1px 2px rgba(90, 62, 28, 0.3);
+        }
+
+        .scroll-paper {
+            background-color: #f0e6d2;
+            border: 1px solid #d9c9a3;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .quote {
+            font-style: italic;
+            color: #5a3e1c;
+            border-left: 3px solid #d9c9a3;
+            padding-left: 1rem;
+        }
+
+        .image-caption {
+            font-size: 0.85rem;
+            color: #7d6340;
+            text-align: center;
+            margin-top: 0.5rem;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f0e6d2;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #a38d63;
+            border-radius: 4px;
+        }
+
+            ::-webkit-scrollbar-thumb:hover {
+                background: #5a3e1c;
+            }
+
     </style>
 </head>
 <body class="bg-white">
@@ -173,8 +208,8 @@
                     <p class="mb-6 italic text-gray-600">
                         Muốn rõ tận căn cơ cuộc dời đô nghìn năm ấy, hãy theo trẫm, đọc tiếp câu chuyện...
                     </p>
-                    <button class="open-popup bg-primary-btn text-white px-8 py-3 rounded-button hover:bg-opacity-90 transition pulse whitespace-nowrap"
-                            data-popup="popup1">
+                    <button class="open-popup bg-primary-btn text-white font-bold py-3 px-8 rounded-button shadow-lg transform hover:scale-105 transition-transform"
+                            data-popup="thanglong-popup">
                         Khám Phá Ngay
                     </button>
                 </div>
@@ -205,8 +240,8 @@
                     <p class="mb-6 italic text-gray-600">
                         Muốn rõ tâm thế của một minh quân – hãy theo trẫm, đọc tiếp câu chuyện…
                     </p>
-                    <button class="open-popup bg-primary-btn text-white px-8 py-3 rounded-button hover:bg-opacity-90 transition pulse whitespace-nowrap"
-                            data-popup="popup2">
+                    <button class="open-popup bg-primary-btn text-white font-bold py-3 px-8 rounded-button shadow-lg transform hover:scale-105 transition-transform"
+                            data-popup="thanglong-popup">
                         Khám Phá Ngay
                     </button>
                 </div>
@@ -237,8 +272,8 @@
                     <p class="mb-6 italic text-gray-600">
                         Muốn biết khởi nguyên của triều Hậu Lê – hãy theo trẫm, đọc tiếp câu chuyện...
                     </p>
-                    <button class="open-popup bg-primary-btn text-white px-8 py-3 rounded-button hover:bg-opacity-90 transition pulse whitespace-nowrap"
-                            data-popup="popup3">
+                    <button class="open-popup bg-primary-btn text-white font-bold py-3 px-8 rounded-button shadow-lg transform hover:scale-105 transition-transform"
+                            data-popup="thanglong-popup">
                         Khám Phá Ngay
                     </button>
                 </div>
@@ -269,8 +304,8 @@
                     <p class="mb-6 italic text-gray-600">
                         Muốn rõ chuyện đồng cung dị mộng, theo trẫm, đọc tiếp...
                     </p>
-                    <button class="open-popup bg-primary-btn text-white px-8 py-3 rounded-button hover:bg-opacity-90 transition pulse whitespace-nowrap"
-                            data-popup="popup4">
+                    <button class="open-popup bg-primary-btn text-white font-bold py-3 px-8 rounded-button shadow-lg transform hover:scale-105 transition-transform"
+                            data-popup="thanglong-popup">
                         Khám Phá Ngay
                     </button>
                 </div>
@@ -278,11 +313,149 @@
         </div>
     </section>
     <body>
-        <!-- Pop-up 1 -->
-        <div id="popup1" class="popup">
+        <div id="thanglong-popup" class="popup">
             <div class="popup-content">
-                <span class="close">&times;</span>
-                <h2>Nội dung Pop-up 1</h2>
+                <!-- Nút đóng mới và nội dung chi tiết đã được chèn vào đây -->
+                <div class="close-button">
+                    <i class="ri-close-line"></i>
+                </div>
+                <div class="scroll-container">
+                    <!-- Phần 1: Header -->
+                    <div class="section bg-[#f8f5f0] pt-10">
+                        <h1 class="main-title text-4xl md:text-5xl text-center font-bold mb-8" style="color: #6B4423;">
+                            NGƯỜI KHỞI MỘNG<br />THĂNG LONG
+                        </h1>
+                        <div class="scroll-paper p-6 mx-auto max-w-3xl relative mb-8" style="background: linear-gradient(to bottom, #f3e7d3, #e6d5b9);">
+                            <div class="flex flex-col md:flex-row gap-6">
+                                <img src="~/images/products/cauchuyenroidodenthanglong.png"></img>
+                                @* <div class="flex-1">
+                                    <h3 class="subtitle text-2xl font-semibold mb-3" style="color: #6B4423;">
+                                        Câu chuyện<br />dời đô đến<br />THĂNG LONG
+                                    </h3>
+                                </div>
+                                <div class="flex-1">
+                                    <img src="https://readdy.ai/api/search-image?query=Ancient%20Vietnamese%20imperial%20citadel%20with%20traditional%20architecture%2C%20pagoda%20towers%2C%20surrounded%20by%20lush%20green%20trees%2C%20historical%20site%20in%20Hanoi%2C%20Vietnam%2C%20cultural%20heritage%2C%20soft%20golden%20light&width=500&height=300&seq=1&orientation=landscape" alt="Hoàng thành Thăng Long" class="rounded-md w-full h-auto" />
+                                </div> *@
+                            </div>
+                        </div>
+                        <div class="text-center mb-6">
+                            <h2 class="subtitle text-3xl font-bold mb-4" style="color: #6B4423;">
+                                THUẬN THIÊN
+                            </h2>
+                            <p class="text-lg italic" style="color: #6B4423;">
+                                "Trên kính mệnh trời, dưới theo ý dân"
+                            </p>
+                        </div>
+                        <p class="text-sm md:text-base max-w-3xl mx-auto">
+                            Trăm tỷ Lý Thái Tổ, tên húy Lý Công Uẩn, thân sinh chốn Kinh Bắc,
+                            lên ngôi đầu thế triều Lý. Gốc nước đất tại Hoa Lư, dù địa thế
+                            hiểm yếu, nhưng không thể là nơi đất lâu dài của Văn minh.
+                        </p>
+                    </div>
+                    <!-- Phần 2: Giới thiệu -->
+                    <div class="section">
+                        <div class="image-container mx-auto max-w-xl mb-6">
+                            <img src="~/images/products/tuong_ly_thai_to-133610.jpeg" alt="Tượng Lý Thái Tổ" class="w-full h-auto" />
+                            <p class="image-caption">
+                                Tượng Lý Thái Tổ tại Hồ Hoàn Kiếm, Hà Nội
+                            </p>
+                        </div>
+                        <div class="quote max-w-2xl mx-auto mb-6">
+                            <p>
+                                "Xét thấy Thừa Dận xưa cũ, trời đất nào nóng, vi bộ gốc rời
+                                nguồn, phía nền la fukeọ cổ, dụ la tới ở đời trong chân minh
+                                (Chiếu dời đô)"
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Phần 3: Bản đồ lịch sử -->
+                    <div class="section">
+                        <div class="map-container max-w-2xl mx-auto mb-6">
+                            <img src="~/images/products/bando.png" alt="Bản đồ Đại Việt thời Lý" class="w-full h-auto" />
+                            <p class="image-caption">NƯỚC ĐẠI VIỆT ĐỜI LÝ (ĐẦU)</p>
+                            <p class="image-caption">
+                                Nguồn: Bản đồ Đại Việt thời nhà Lý (XI)
+                            </p>
+                        </div>
+                        <div class="historical-note max-w-2xl mx-auto">
+                            <p class="font-medium">
+                                Năm Canh Tuất (1010), trăm chiêm bao thấy rồng vàng bay lên từ
+                                sông Nhị, thần linh hiển hiện khi đặt tư hỏi. Biết đây là điềm
+                                thiên, trăm ban Chiếu dời đô, dời tư Hoa Lư về đất Rồng.
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Phần 4: Minh họa kiến trúc -->
+                    <div class="section">
+                        <div class="text-center mb-6">
+                            <p class="italic max-w-2xl mx-auto">
+                                "Đầu là nơi trung tâm của trời đất, đáng ngôi đóng đô để mở nghề
+                                mới, xây văn trị, điều đúng bốn phương, thuận lợi cho chính sự,
+                                tiện việc nhân xu, đáp ứng đúng lòng dân" - Chiếu dời đô Lý Thái
+                                Tổ, Đại Việt sử ký toàn thư
+                            </p>
+                        </div>
+                        <div class="flex justify-center mb-6">
+                            <img src="~/images/products/hoangthanh.png" alt="Phác họa Hoàng thành" class="w-full max-w-2xl h-auto" />
+                        </div>
+                        <div class="image-container max-w-2xl mx-auto mb-4">
+                            <img src="~/images/products/bandothoily.png" alt="Di tích lịch sử" class="w-full h-auto" />
+                            <p class="image-caption">
+                                Nguồn: Bản đồ Đại Việt thời nhà Lý (XI)
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Phần 5: Nội dung chính -->
+                    <div class="section">
+                        <div class="max-w-2xl mx-auto mb-6">
+                            <p class="mb-4">
+                                Trăm chọn đất Đại La - đất địa linh long vị, đại khí thiên địa,
+                                sát sông Nhị, trông phải nam, giáp đất bắc, trung tâm gội khí
+                                linh thiên hội tụ. Trăm đổi tên đô thành là Thăng Long - "Rồng
+                                bay lên", khai sinh kỷ nguyên mới.
+                            </p>
+                            <p class="mb-4">
+                                Ngày trăm đất bóng đầu tiên lên đất Thăng Long, sông Nhị sóng
+                                sỡ, mây trời cao rộng, cảnh vật mở ra một chân trời mới. Dân
+                                chúng đông vui, nhà nhà trần hùng, chân thành hướng về vị vua
+                                đất nước theo khí thiên.
+                            </p>
+                            <p>
+                                Trải qua bao nhiêu triều đại, Hoàng thành Thăng Long vẫn là
+                                trung tâm chính trị, văn hóa, lòng dân vẫn hướng về nơi nguyên
+                                khởi đầu: nơi vị vua nghe theo mệnh trời, vì đại nghiệp ngàn
+                                đời.
+                            </p>
+                        </div>
+                        <div class="image-container max-w-2xl mx-auto mb-4">
+                            <img src="~/images//products/roidorathanglong.png" alt="Vua Lý Thái-tổ dời đô ra Thăng-long" class="w-full h-auto" />
+                            <p class="image-caption">Vua Lý Thái-tổ dời đô ra Thăng-long</p>
+                        </div>
+                    </div>
+                    <!-- Phần 6: Kết thúc -->
+                    <div class="section">
+                        <h2 class="text-2xl font-bold text-center !text-primary mb-6">
+                            DẤU ẤN NGÀN NĂM
+                        </h2>
+                        <h3 class="text-xl font-semibold text-center mb-4">
+                            Khởi nguyên từ giấc mộng Rồng Bay
+                        </h3>
+                        <div class="max-w-2xl mx-auto mb-6">
+                            <p class="mb-4">
+                                Trong bộ sưu tập Dấu Ấn Ngàn Năm, hình tượng trăm được ghi lại:
+                                một tay trỏ về phương Bắc, sau là đám mây cuộn lên thành rồng,
+                                hóa điềm linh thiên trên sông Nhị.
+                            </p>
+                            <p>
+                                Trăm đã làm điều các đế trước ngàn năm chưa làm, không phải để
+                                ghi danh, mà để giao cơ đồ về sau.
+                            </p>
+                        </div>
+                        <div class="flex justify-center items-center">
+                            <img src="~/images/products/logo1.png" alt="Logo Dấu Ấn Ngàn Năm" class="w-56 h-56" />
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -369,11 +542,24 @@
           });
         });
 
-        // Đóng pop-up khi nhấp nút × hoặc bên ngoài
+                /// Đóng pop-up khi nhấp nút × hoặc bên ngoài
         document.querySelectorAll('.popup').forEach(popup => {
-          // Đóng khi nhấp nút ×
-          popup.querySelector('.close').addEventListener('click', () => {
-            popup.classList.remove('active');
+
+          // SỬA LỖI TẠI ĐÂY
+          const closeButton = popup.querySelector('.close, .close-button');
+
+          // Chỉ thêm sự kiện nếu tìm thấy nút đóng
+          if (closeButton) {
+            closeButton.addEventListener('click', () => {
+              popup.classList.remove('active');
+            });
+          }
+
+          // Đóng khi nhấp bên ngoài (giữ nguyên)
+          popup.addEventListener('click', (event) => {
+            if (event.target === popup) {
+              popup.classList.remove('active');
+            }
           });
 
           // Đóng khi nhấp bên ngoài
