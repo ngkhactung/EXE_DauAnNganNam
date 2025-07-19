@@ -102,6 +102,128 @@
         .footer-link:hover{
             color: #a9312e !important;
         }
+
+        /* Contact Icon */
+        .fab-contact-container {
+            position: fixed;
+            bottom: 120px;
+            right: 35px;
+            z-index: 9000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .fab-button {
+            position: relative; /* Cần thiết cho việc định vị tooltip */
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #007bff;
+            color: white !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            cursor: pointer;
+            border: none;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 28px; /* Kích thước icon */
+        }
+
+            .fab-button:hover {
+                transform: scale(1.2);
+                box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+            }
+
+        #fab-stack {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px; /* Khoảng cách giữa các icon */
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .fab-phone {
+            background-color: #25d366;
+        }
+
+        .fab-zalo {
+            background-color: #fff; /* Nền trắng cho Zalo */
+            padding: 0;
+        }
+
+        .fab-icon-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .fab-messenger {
+            background: linear-gradient(45deg, #0088cc, #006aff);
+        }
+
+        .fab-close {
+            background-color: #a9312e;
+        }
+
+        .fab-opener {
+            background: #a9312e;
+        }
+
+        /* Hiệu ứng xuất hiện */
+        #fab-stack.hidden {
+            visibility: hidden;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        #fab-opener.hidden {
+            display: none;
+        }
+
+        /* Tooltip Bubble */
+        .fab-tooltip {
+            position: absolute;
+            top: 50%;
+            right: 100%;
+            transform: translateY(-50%);
+            margin-right: 15px; /* Khoảng cách giữa bubble và icon */
+            padding: 8px 16px;
+            background: white;
+            color: #333;
+            border-radius: 8px;
+            white-space: nowrap;
+            font-size: 15px;
+            font-weight: 500;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            /* Ẩn mặc định */
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.2s ease, visibility 0.2s ease;
+        }
+
+            /* Mũi tên tam giác của Tooltip */
+            .fab-tooltip::after {
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 100%; /* Đặt ở cạnh phải của tooltip */
+                transform: translateY(-50%);
+                border-width: 6px;
+                border-style: solid;
+                border-color: transparent transparent transparent white; /* Tạo tam giác chỉ sang phải */
+            }
+
+        /* Hiện tooltip khi hover vào nút */
+        .fab-button:hover .fab-tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+
     </style>
 
     @RenderSection("HeaderOption", required: false)
@@ -293,6 +415,32 @@
         </div>
     </div>
 
+    <!-- Contact Icon -->
+    <div class="fab-contact-container">
+        <div id="fab-stack" class="hidden">
+            <a href="https://zalo.me/0325974083" target="_blank" title="Chat Zalo" class="fab-button fab-zalo">
+                <img src="~/images/logo-zalo-tron.png" alt="Zalo" class="fab-icon-img" />
+                <span class="fab-tooltip">Chat Zalo: 0325974083</span>
+            </a>
+            <a href="https://m.me/dauanngannamfpt" target="_blank" title="Chat Facebook" class="fab-button fab-messenger">
+                <i class="ri-messenger-fill"></i>
+                <span class="fab-tooltip">Chat Facebook</span>
+            </a>
+            <a href="tel:+84325974083" title="Gọi điện" class="fab-button fab-phone">
+                <i class="ri-phone-fill"></i>
+                <span class="fab-tooltip">Gọi: 0325974083</span>
+            </a>
+            <button id="fab-closer" title="Đóng" class="fab-button fab-close">
+                <i class="ri-close-line"></i>
+            </button>
+        </div>
+
+        <button id="fab-opener" title="Liên hệ" class="fab-button fab-opener">
+            <i class="ri-message-3-line"></i>
+        </button>
+    </div>
+
+
     <script src="~/js/jquery.min.js"></script>
     <script src="~/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/bootstrap-datepicker.min.js"></script>
@@ -408,6 +556,26 @@
                         owl.trigger('next.owl.carousel');
                     });
                 }
+
+                // --- START: JAVASCRIPT CHO CỤM NÚT LIÊN HỆ MỚI ---
+                const fabOpener = document.getElementById('fab-opener');
+                const fabCloser = document.getElementById('fab-closer');
+                const fabStack = document.getElementById('fab-stack');
+
+                if (fabOpener && fabCloser && fabStack) {
+                    // Khi bấm vào nút mở (icon tin nhắn)
+                    fabOpener.addEventListener('click', function() {
+                        fabOpener.classList.add('hidden');
+                        fabStack.classList.remove('hidden');
+                    });
+
+                    // Khi bấm vào nút đóng (icon X)
+                    fabCloser.addEventListener('click', function() {
+                        fabStack.classList.add('hidden');
+                        fabOpener.classList.remove('hidden');
+                    });
+                }
+                // --- END: JAVASCRIPT CHO CỤM NÚT LIÊN HỆ MỚI ---
             }
         });
     </script>
