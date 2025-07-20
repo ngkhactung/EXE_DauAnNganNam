@@ -1,0 +1,21 @@
+name: Cleanup Old Artifacts
+
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+    inputs:
+      days:
+        description: 'Delete artifacts older than this number of days'
+        required: true
+        default: '0' # A value of 0 will delete all artifacts
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Purge old artifacts
+        uses: kolpav/purge-artifacts-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repo: ${{ github.repository }}
+          days: ${{ github.event.inputs.days }}
