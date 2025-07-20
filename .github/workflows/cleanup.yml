@@ -4,18 +4,16 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
     inputs:
-      days:
-        description: 'Delete artifacts older than this number of days'
+      age:
+        description: 'Delete artifacts older than this age (e.g., 1d, 2w, 6M, 1y)'
         required: true
-        default: '0' # A value of 0 will delete all artifacts
+        default: '0d' # 0d will delete all artifacts
 
 jobs:
-  cleanup:
+  remove-old-artifacts:
     runs-on: ubuntu-latest
     steps:
-      - name: Purge old artifacts
-        uses: kolpav/purge-artifacts-action@v1
+      - name: Remove old artifacts
+        uses: c-hive/gha-remove-artifacts@v1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          repo: ${{ github.repository }}
-          days: ${{ github.event.inputs.days }}
+          age: ${{ github.event.inputs.age }}
