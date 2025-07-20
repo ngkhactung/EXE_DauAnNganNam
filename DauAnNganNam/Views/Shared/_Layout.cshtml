@@ -151,7 +151,7 @@
         }
 
         .fab-zalo {
-            background-color: #fff; /* Nền trắng cho Zalo */
+            background-color: #fff;
             padding: 0;
         }
 
@@ -174,7 +174,6 @@
             background: #a9312e;
         }
 
-        /* Hiệu ứng xuất hiện */
         #fab-stack.hidden {
             visibility: hidden;
             opacity: 0;
@@ -191,7 +190,7 @@
             top: 50%;
             right: 100%;
             transform: translateY(-50%);
-            margin-right: 15px; /* Khoảng cách giữa bubble và icon */
+            margin-right: 15px;
             padding: 8px 16px;
             background: white;
             color: #333;
@@ -206,16 +205,15 @@
             transition: opacity 0.2s ease, visibility 0.2s ease;
         }
 
-            /* Mũi tên tam giác của Tooltip */
             .fab-tooltip::after {
                 content: '';
                 position: absolute;
                 top: 50%;
-                left: 100%; /* Đặt ở cạnh phải của tooltip */
+                left: 100%;
                 transform: translateY(-50%);
                 border-width: 6px;
                 border-style: solid;
-                border-color: transparent transparent transparent white; /* Tạo tam giác chỉ sang phải */
+                border-color: transparent transparent transparent white;
             }
 
         /* Hiện tooltip khi hover vào nút */
@@ -575,7 +573,6 @@
                         fabOpener.classList.remove('hidden');
                     });
                 }
-                // --- END: JAVASCRIPT CHO CỤM NÚT LIÊN HỆ MỚI ---
             }
         });
     </script>
