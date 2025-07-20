@@ -11,6 +11,9 @@ on:
 
 jobs:
   remove-old-artifacts:
+    permissions:
+      actions: write  # This permission is required to delete artifacts
+
     runs-on: ubuntu-latest
     steps:
       - name: Remove old artifacts
