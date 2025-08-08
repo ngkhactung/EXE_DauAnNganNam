@@ -9,15 +9,19 @@ namespace DauAnNganNam.Controllers
 {
     public class AisController : Controller
     {
-        private readonly string _geminiApiKey = "AIzaSyB1f6_ab5qqLUazt3mbyh6XOd8mkc9E_XQ";
-        private readonly string _azureSpeechKey = "AeKxhe4TvBEtmnLw1vE7tE54TbLcLkqvz8YtwXjyAoqkuRSEjunBJQQJ99BFACqBBLyXJ3w3AAAYACOGXE8J";
-        private readonly string _azureSpeechRegion = "southeastasia";
+        private string _geminiApiKey;
+        private string _azureSpeechKey;
+        private string _azureSpeechRegion;
 
         private readonly HttpClient _httpClient;
 
-        public AisController(IHttpClientFactory httpClientFactory)
+        public AisController(IHttpClientFactory httpClientFactory, IConfiguration config)
         {
             _httpClient = httpClientFactory.CreateClient();
+            _geminiApiKey = config["AiVoiceChat:GeminiApiKey"];
+            _azureSpeechKey = config["AiVoiceChat:AzureSpeechKey"];
+            _azureSpeechRegion = config["AiVoiceChat:AzureSpeechRegion"];
+
         }
 
         public IActionResult Index()
